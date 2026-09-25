@@ -9,18 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Tela Central.png" />
-    <None Remove="Tela Entrar.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.12" />
     <PackageReference Include="MySql.Data" Version="26.7.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Tela Central.png" />
-    <Resource Include="Tela Entrar.png" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,23 @@
+﻿<Window x:Class="Sistema_Gerenciamento_Usuários.Tela_de_Admin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sistema_Gerenciamento_Usuários"
+        mc:Ignorable="d"
+        Title="Tela_de_Admin" Height="450" Width="800">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Tela de Administrador.png"/>
+        </Grid.Background>
+        <Button x:Name="Cadastrar_usuarios" Content="Cadastrar novos usuários" HorizontalAlignment="Center" Height="30" Margin="0,102,0,0" VerticalAlignment="Top" Width="476" FontSize="15" FontFamily="Rockwell Extra Bold" BorderBrush="Black" Background="#FF545454" Foreground="White" BorderThickness="2,2,2,2" Click="Cadastrar_usuarios_Click"/>
+        <Button x:Name="Visualizar_Usuarios" Content="Visualizar usuários" HorizontalAlignment="Center" Height="30" Margin="0,138,0,0" VerticalAlignment="Top" Width="476" FontSize="15" Background="#FF545454" BorderBrush="Black" Foreground="White" FontFamily="Rockwell Extra Bold" BorderThickness="2,2,2,2" Click="Visualizar_Usuarios_Click"/>
+        <Button x:Name="Editar_usuarios" Content="Editar usuários" HorizontalAlignment="Center" Height="30" Margin="0,172,0,0" VerticalAlignment="Top" Width="476" FontSize="15" Foreground="White" Background="#FF545454" BorderBrush="Black" FontFamily="Rockwell Extra Bold" BorderThickness="2,2,2,2" Click="Editar_usuarios_Click"/>
+        <Button x:Name="Excluir_usuarios" Content="Excluir usuários" HorizontalAlignment="Center" Height="30" Margin="0,206,0,0" VerticalAlignment="Top" Width="476" Foreground="White" Background="#FF545454" FontSize="15" FontFamily="Rockwell Extra Bold" BorderBrush="Black" BorderThickness="2,2,1,2" Click="Excluir_usuarios_Click"/>
+        <Button x:Name="Ativar_Desativar_usuarios" Content="Ativar ou Desativar usuarios" HorizontalAlignment="Center" Height="31" Margin="0,239,0,0" VerticalAlignment="Top" Width="476" RenderTransformOrigin="-0.288,2.822" FontSize="15" FontFamily="Rockwell Extra Bold" Foreground="White" Background="#FF545454" BorderBrush="Black" BorderThickness="2,2,2,2" Click="Ativar_Desativar_usuários_Click"/>
+        <Button x:Name="Alterar_nivel_acesso_outros_usuarios" Content="Alterar o tipo ou nível de acesso de outros usuários" HorizontalAlignment="Center" Height="30" Margin="0,274,0,0" VerticalAlignment="Top" Width="476" BorderBrush="Black" Foreground="White" FontFamily="Rockwell Extra Bold" FontSize="15" Background="#FF545454" BorderThickness="2,2,2,2" Click="Alterar_nivel_acesso_outros_usuarios_Click"/>
+        <Button x:Name="Redefinir_senha_usuarios" Content="Redefinir a senha de outros usuários" HorizontalAlignment="Center" Height="30" Margin="0,308,0,0" VerticalAlignment="Top" Width="476" FontSize="15" FontFamily="Rockwell Extra Bold" Background="#FF545454" Foreground="White" BorderBrush="Black" BorderThickness="2,2,2,2" Click="Redefinir_senha_usuarios_Click"/>
+        <Button x:Name="Consultar_registros_auditoria" Content="Consultar registros de auditoria" HorizontalAlignment="Center" Height="32" Margin="0,344,0,0" VerticalAlignment="Top" Width="476" Foreground="White" Background="#FF545454" FontSize="15" FontFamily="Rockwell Extra Bold" BorderBrush="Black" BorderThickness="2,2,2,2" Click="Consultar_registros_auditoria_Click"/>
+
+    </Grid>
+</Window>

@@ -42,27 +42,9 @@ namespace Sistema_Gerenciamento_Usuários
             string senha = Senha.Password.Trim();
 
 
-            if (usuario.Length < 3)
+            if (string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(senha))
             {
-                MessageBox.Show("Nome inválido. (Deve conter pelo menos 3 caracteres!)", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            if (!email.Contains("@") || !new EmailAddressAttribute().IsValid(email))
-            {
-                MessageBox.Show("E-mail inválido! Certifique-se de incluir o '@'", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            if (senha.Length < 8)
-            {
-                MessageBox.Show("Senha inválida. (Deve conter pelo menos 8 caracteres!)", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            if (Comfirmar_senha.Password != senha || string.IsNullOrEmpty(Comfirmar_senha.Password))
-            {
-                MessageBox.Show("As senhas não são iguais. Tente novamente!", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Preencha todos os campos!", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -72,44 +54,86 @@ namespace Sistema_Gerenciamento_Usuários
                 {
                     conexao.Open();
 
+                    string query = "SELECT id, usuario, senha, IsAdmin, bloqueado, tentativas_falhas FROM usuarios WHERE usuario = @usuario";
 
-                    string queryCheck = "SELECT COUNT(*) FROM usuarios WHERE usuario = @usuario";
-                    using (MySqlCommand comandoCheck = new MySqlCommand(queryCheck, conexao))
+                    using (MySqlCommand cmd = new MySqlCommand(query, conexao))
                     {
-                        comandoCheck.Parameters.AddWithValue("@usuario", usuario);
-                        long usuarioExiste = (long)comandoCheck.ExecuteScalar();
+                        cmd.Parameters.AddWithValue("@usuario", usuario);
 
-                        if (usuarioExiste > 0)
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
-                            MessageBox.Show("Este nome de usuário já está em uso!", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                            return;
+                            if (reader.Read())
+                            {
+                                int id = reader.GetInt32("id");
+                                string hashSenha = reader.GetString("senha");
+                                bool isAdmin = reader.GetBoolean("IsAdmin");
+                                bool bloqueado = reader.GetBoolean("bloqueado");
+                                int tentativas = reader.GetInt32("tentativas_falhas");
+
+                                if (bloqueado)
+                                {
+                                    MessageBox.Show("Conta bloqueada por excesso de tentativas. Contate o Administrador.", "Acesso Negado", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    return;
+                                }
+
+                                bool senhaValida = BCrypt.Net.BCrypt.Verify(senha, hashSenha);
+
+                                if (senhaValida)
+                                {
+                                    reader.Close();
+
+                                    string updateSucesso = "UPDATE usuarios SET ultimo_login = NOW(), tentativas_falhas = 0 WHERE id = @id";
+                                    using (MySqlCommand cmdUpdate = new MySqlCommand(updateSucesso, conexao))
+                                    {
+                                        cmdUpdate.Parameters.AddWithValue("@id", id);
+                                        cmdUpdate.ExecuteNonQuery();
+                                    }
+
+                                    if (isAdmin)
+                                    {
+                                        Tela_de_Admin telaAdmin = new Tela_de_Admin();
+                                        telaAdmin.Show();
+                                    }
+                                    else
+                                    {
+                                        Tela_de_Usuario telaUser = new Tela_de_Usuario();
+                                        telaUser.Show();
+                                    }
+
+                                    this.Close();
+                                }
+                                else
+                                {
+                                    reader.Close();
+
+                                    tentativas++;
+                                    bool deveBloquear = tentativas >= 3;
+
+                                    string updateFalha = "UPDATE usuarios SET tentativas_falhas = @tentativas, bloqueado = @bloquear WHERE id = @id";
+                                    using (MySqlCommand cmdFalha = new MySqlCommand(updateFalha, conexao))
+                                    {
+                                        cmdFalha.Parameters.AddWithValue("@tentativas", tentativas);
+                                        cmdFalha.Parameters.AddWithValue("@bloquear", deveBloquear);
+                                        cmdFalha.Parameters.AddWithValue("@id", id);
+                                        cmdFalha.ExecuteNonQuery();
+                                    }
+
+                                    MessageBox.Show("Usuário ou senha inválidos.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Usuário ou senha inválidos.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
                         }
                     }
-
-                    string senhaCriptografada = BCrypt.Net.BCrypt.HashPassword(senha);
-
-                    string queryInsert = "INSERT INTO usuarios (email, usuario, senha, IsAdmin) VALUES (@email, @usuario, @senha, @IsAdmin)";
-
-                    using (MySqlCommand comandoInsert = new MySqlCommand(queryInsert, conexao))
-                    {
-                        comandoInsert.Parameters.AddWithValue("@email", email);
-                        comandoInsert.Parameters.AddWithValue("@usuario", usuario);
-                        comandoInsert.Parameters.AddWithValue("@senha", senhaCriptografada);
-                        comandoInsert.Parameters.AddWithValue("@IsAdmin", false);
-
-                        comandoInsert.ExecuteNonQuery();
-                    }
                 }
-
-                MessageBox.Show("Usuário cadastrado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
-                LimparCampos();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao cadastrar: {ex.Message}", "Erro Crítico", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Erro de conexão: {ex.Message}", "Erro Crítico", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-       
     }
 }
 
