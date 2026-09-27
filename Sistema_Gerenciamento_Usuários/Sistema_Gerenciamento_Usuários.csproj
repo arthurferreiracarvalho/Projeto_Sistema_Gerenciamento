@@ -9,9 +9,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Imagens\Cadastro de Usuário.png" />
+    <None Remove="Imagens\Tela Central.png" />
+    <None Remove="Imagens\Tela de Administrador.png" />
+    <None Remove="Imagens\Tela Entrar.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.12" />
     <PackageReference Include="MySql.Data" Version="26.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Imagens\Cadastro de Usuário.png" />
+    <Resource Include="Imagens\Tela Central.png" />
+    <Resource Include="Imagens\Tela de Administrador.png" />
+    <Resource Include="Imagens\Tela Entrar.png" />
   </ItemGroup>
 
 </Project>

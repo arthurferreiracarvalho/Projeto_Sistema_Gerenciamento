@@ -1,30 +1,51 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using MySql.Data.MySqlClient;
 using BCrypt.Net;
 
-
 namespace Sistema_Gerenciamento_Usuários
 {
-    /// <summary>
-    /// Lógica interna para Tela_Cadastro.xaml
-    /// </summary>
     public partial class Tela_Cadastro : Window
     {
         public string connectionString = "Server=localhost;Database=login;Uid=root;Pwd=;";
+
         public Tela_Cadastro()
         {
             InitializeComponent();
+            InicializarAdminAutomatico();
+        }
+
+        private void InicializarAdminAutomatico()
+        {
+            try
+            {
+                using (MySqlConnection conexao = new MySqlConnection(connectionString))
+                {
+                    conexao.Open();
+
+                    string checkQuery = "SELECT COUNT(*) FROM usuarios";
+                    using (MySqlCommand cmdCheck = new MySqlCommand(checkQuery, conexao))
+                    {
+                        long total = (long)cmdCheck.ExecuteScalar();
+                        if (total == 0)
+                        {
+                            string hashSenha = BCrypt.Net.BCrypt.HashPassword("12345678");
+                            string insertQuery = "INSERT INTO usuarios (nome_completo, email, nome_usuario, senha, IsAdmin, bloqueado, tentativas_falhas) " +
+                                                "VALUES ('Arthur ADM', 'arthur_adm@gmail.com', 'Arthur ADM', @senha, 1, 0, 0)";
+
+                            using (MySqlCommand cmdInsert = new MySqlCommand(insertQuery, conexao))
+                            {
+                                cmdInsert.Parameters.AddWithValue("@senha", hashSenha);
+                                cmdInsert.ExecuteNonQuery();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro na inicialização: {ex.Message}", "Erro Crítico", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void LimparCampos()
@@ -37,10 +58,8 @@ namespace Sistema_Gerenciamento_Usuários
 
         private void Confirmar_Click(object sender, RoutedEventArgs e)
         {
-            string email = Email.Text.Trim();
             string usuario = Usuario.Text.Trim();
             string senha = Senha.Password.Trim();
-
 
             if (string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(senha))
             {
@@ -54,7 +73,7 @@ namespace Sistema_Gerenciamento_Usuários
                 {
                     conexao.Open();
 
-                    string query = "SELECT id, usuario, senha, IsAdmin, bloqueado, tentativas_falhas FROM usuarios WHERE usuario = @usuario";
+                    string query = "SELECT id, senha, IsAdmin, bloqueado FROM usuarios WHERE nome_usuario = @usuario";
 
                     using (MySqlCommand cmd = new MySqlCommand(query, conexao))
                     {
@@ -68,17 +87,14 @@ namespace Sistema_Gerenciamento_Usuários
                                 string hashSenha = reader.GetString("senha");
                                 bool isAdmin = reader.GetBoolean("IsAdmin");
                                 bool bloqueado = reader.GetBoolean("bloqueado");
-                                int tentativas = reader.GetInt32("tentativas_falhas");
 
                                 if (bloqueado)
                                 {
-                                    MessageBox.Show("Conta bloqueada por excesso de tentativas. Contate o Administrador.", "Acesso Negado", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    MessageBox.Show("Conta bloqueada por excesso de tentativas.", "Acesso Negado", MessageBoxButton.OK, MessageBoxImage.Error);
                                     return;
                                 }
 
-                                bool senhaValida = BCrypt.Net.BCrypt.Verify(senha, hashSenha);
-
-                                if (senhaValida)
+                                if (BCrypt.Net.BCrypt.Verify(senha, hashSenha))
                                 {
                                     reader.Close();
 
@@ -104,26 +120,12 @@ namespace Sistema_Gerenciamento_Usuários
                                 }
                                 else
                                 {
-                                    reader.Close();
-
-                                    tentativas++;
-                                    bool deveBloquear = tentativas >= 3;
-
-                                    string updateFalha = "UPDATE usuarios SET tentativas_falhas = @tentativas, bloqueado = @bloquear WHERE id = @id";
-                                    using (MySqlCommand cmdFalha = new MySqlCommand(updateFalha, conexao))
-                                    {
-                                        cmdFalha.Parameters.AddWithValue("@tentativas", tentativas);
-                                        cmdFalha.Parameters.AddWithValue("@bloquear", deveBloquear);
-                                        cmdFalha.Parameters.AddWithValue("@id", id);
-                                        cmdFalha.ExecuteNonQuery();
-                                    }
-
-                                    MessageBox.Show("Usuário ou senha inválidos.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    MessageBox.Show("Senha incorreta.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                                 }
                             }
                             else
                             {
-                                MessageBox.Show("Usuário ou senha inválidos.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                                MessageBox.Show("Usuário não encontrado.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                             }
                         }
                     }
@@ -136,4 +138,3 @@ namespace Sistema_Gerenciamento_Usuários
         }
     }
 }
-

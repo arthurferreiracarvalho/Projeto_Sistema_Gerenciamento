@@ -9,7 +9,7 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid Margin="0,0,0,-47">
         <Grid.Background>
-            <ImageBrush ImageSource="/Tela Central.png"/>
+            <ImageBrush ImageSource="pack://application:,,,/Imagens/Tela Central.png"/>
         </Grid.Background>
         <Button x:Name="ENTRAR" Content=" ENTRAR " Height="91" Margin="224,276,0,0" VerticalAlignment="Top" Width="326" Click="ENTRAR_Click" BorderBrush="Black" FontFamily="Clarendon Blk BT" FontSize="55" Background="White" Foreground="Black" HorizontalAlignment="Left" BorderThickness="3,3,3,3"/>
         <TextBox x:Name="Central_de_Contas" HorizontalAlignment="Center" Height="70" Margin="0,166,0,0" TextWrapping="Wrap" Text="Central de Contas" VerticalAlignment="Top" Width="446" FontSize="40" FontFamily="Rockwell Extra Bold" BorderBrush="#FF545454" BorderThickness="5,5,5,5" TextChanged="TextBox_TextChanged"/>

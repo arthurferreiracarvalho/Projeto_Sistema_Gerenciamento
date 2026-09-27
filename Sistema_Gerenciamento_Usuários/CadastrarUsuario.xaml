@@ -8,19 +8,20 @@
         Title="CadastrarUsuario" Height="450" Width="800">
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="/Cadastro de Usuário.png"/>
+            <ImageBrush ImageSource="pack://application:,,,/Imagens/Cadastro de Usuário.png"/>
         </Grid.Background>
-        <Label Content="Nome de Usuário" HorizontalAlignment="Center" Height="32" Margin="0,115,0,0" VerticalAlignment="Top" Width="376" Background="{x:Null}" FontSize="20" FontFamily="Rockwell Extra Bold"/>
-        <TextBox HorizontalAlignment="Center" Height="30" TextWrapping="Wrap" VerticalAlignment="Top" Width="376" Background="#FFB7B7B7" Margin="0,141,0,0" FontSize="14" BorderBrush="Black"/>
-        <Label Content="Email do Usuário" HorizontalAlignment="Center" Height="30" Margin="0,176,0,0" VerticalAlignment="Top" Width="376" FontSize="20" FontFamily="Rockwell Extra Bold"/>
-        <TextBox HorizontalAlignment="Center" Height="30" TextWrapping="Wrap" VerticalAlignment="Top" Width="376" Background="#FFB7B7B7" FontSize="14" Margin="0,201,0,0" BorderBrush="Black"/>
-        <TextBox HorizontalAlignment="Center" Height="29" Margin="0,56,0,0" TextWrapping="Wrap" Text="Nome Completo" VerticalAlignment="Top" Width="376" FontSize="20" BorderBrush="{x:Null}" FontFamily="Rockwell Extra Bold" TextChanged="TextBox_TextChanged"/>
-        <TextBox HorizontalAlignment="Center" Height="30" Margin="0,81,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="376" Background="#FFB7B7B7" FontSize="14" BorderBrush="Black"/>
-        <TextBox HorizontalAlignment="Center" Height="28" Margin="0,237,0,0" TextWrapping="Wrap" Text="Senha (Obrigatória)" VerticalAlignment="Top" Width="376" FontSize="20" TextChanged="TextBox_TextChanged" FontFamily="Rockwell Extra Bold" BorderBrush="White"/>
-        <PasswordBox HorizontalAlignment="Center" Height="30" Margin="0,263,0,0" VerticalAlignment="Top" Width="376" Background="#FFB7B7B7" BorderBrush="Black"/>
-        <TextBox HorizontalAlignment="Center" Height="28" Margin="0,298,0,0" TextWrapping="Wrap" Text="Confirmar Senha" VerticalAlignment="Top" Width="376" FontSize="20" TextChanged="TextBox_TextChanged" FontFamily="Rockwell Extra Bold" BorderBrush="White"/>
-        <PasswordBox HorizontalAlignment="Center" Height="30" Margin="0,321,0,0" VerticalAlignment="Top" Width="376" Background="#FFB7B7B7" BorderBrush="Black"/>
-        <Button Content="CADASTRAR" HorizontalAlignment="Center" Height="42" Margin="0,366,0,0" VerticalAlignment="Top" Width="238" FontSize="25" BorderBrush="Black" Background="#FF058201" FontFamily="Rockwell Extra Bold" Foreground="White"/>
+        <Label x:Name="NomeUsuario" Content="Nome de Usuário" HorizontalAlignment="Center" Height="32" Margin="0,115,0,0" VerticalAlignment="Top" Width="376" Background="{x:Null}" FontSize="20" FontFamily="Rockwell Extra Bold"/>
+        <TextBox x:Name="Nome_Usuario" HorizontalAlignment="Center" Height="30" TextWrapping="Wrap" VerticalAlignment="Top" Width="376" Background="#FFB7B7B7" Margin="0,141,0,0" FontSize="14" BorderBrush="Black"/>
+        <Label x:Name="EmailUsuario" Content="Email do Usuário" HorizontalAlignment="Center" Height="30" Margin="0,175,0,0" VerticalAlignment="Top" Width="376" FontSize="20" FontFamily="Rockwell Extra Bold"/>
+        <TextBox x:Name="Email_Usuario" HorizontalAlignment="Center" Height="30" TextWrapping="Wrap" VerticalAlignment="Top" Width="376" Background="#FFB7B7B7" FontSize="14" Margin="0,201,0,0" BorderBrush="Black"/>
+        <TextBox x:Name="Nome_Completo" HorizontalAlignment="Center" Height="30" Margin="0,81,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="376" Background="#FFB7B7B7" FontSize="14" BorderBrush="Black" TextChanged="TextBox_TextChanged"/>
+        <PasswordBox x:Name="Senha_Usuario" HorizontalAlignment="Center" Height="30" Margin="0,263,0,0" VerticalAlignment="Top" Width="376" Background="#FFB7B7B7" BorderBrush="Black"/>
+        <PasswordBox x:Name="Confirmar_Senha" HorizontalAlignment="Center" Height="30" Margin="0,321,0,0" VerticalAlignment="Top" Width="376" Background="#FFB7B7B7" BorderBrush="Black"/>
+        <Label x:Name="NomeCompleto" Content="Nome Completo" HorizontalAlignment="Left" Height="35" Margin="212,53,0,0" VerticalAlignment="Top" Width="204" FontSize="20" FontFamily="Rockwell Extra Bold"/>
+        <Label x:Name="SenhaUsuario" Content="Senha do Usuário" HorizontalAlignment="Center" Height="33" Margin="0,237,0,0" VerticalAlignment="Top" Width="376" FontSize="20" FontFamily="Rockwell Extra Bold"/>
+        <Label x:Name="ConfirmarSenha" Content="Confirmar Senha" HorizontalAlignment="Center" Height="40" Margin="0,295,0,0" VerticalAlignment="Top" Width="376" FontSize="20" FontFamily="Rockwell Extra Bold"/>
+        <Button x:Name="Cadastrar" Content="CADASTRAR" HorizontalAlignment="Left" Height="40" Margin="135,367,0,0" VerticalAlignment="Top" Width="236" Foreground="White" Background="#FF228B00" BorderBrush="Black" FontSize="30" FontFamily="Rockwell Extra Bold" Click="Cadastrar_Click"/>
+        <Button x:Name="Foto_Perfil" Content="FOTO DE PERFIL" Click="Foto_Perfil" Margin="429,367,135,27" Background="#FF545454" Foreground="White" FontWeight="Bold" BorderBrush="Black" FontFamily="Rockwell Extra Bold" FontSize="22"/>
 
     </Grid>
 </Window>

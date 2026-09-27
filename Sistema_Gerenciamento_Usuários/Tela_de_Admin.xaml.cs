@@ -24,7 +24,9 @@ namespace Sistema_Gerenciamento_Usuários
 
         private void Cadastrar_usuarios_Click(object sender, RoutedEventArgs e)
         {
-
+            CadastrarUsuario janela = new CadastrarUsuario();
+            janela.Show();
+            this.Close();
         }
 
         private void Visualizar_Usuarios_Click(object sender, RoutedEventArgs e)

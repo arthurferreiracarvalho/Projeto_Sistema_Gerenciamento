@@ -8,7 +8,7 @@
         Title="Tela_de_Admin" Height="450" Width="800">
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="/Tela de Administrador.png"/>
+            <ImageBrush ImageSource="pack://application:,,,/Imagens/Tela de Administrador.png"/>
         </Grid.Background>
         <Button x:Name="Cadastrar_usuarios" Content="Cadastrar novos usuários" HorizontalAlignment="Center" Height="30" Margin="0,102,0,0" VerticalAlignment="Top" Width="476" FontSize="15" FontFamily="Rockwell Extra Bold" BorderBrush="Black" Background="#FF545454" Foreground="White" BorderThickness="2,2,2,2" Click="Cadastrar_usuarios_Click"/>
         <Button x:Name="Visualizar_Usuarios" Content="Visualizar usuários" HorizontalAlignment="Center" Height="30" Margin="0,138,0,0" VerticalAlignment="Top" Width="476" FontSize="15" Background="#FF545454" BorderBrush="Black" Foreground="White" FontFamily="Rockwell Extra Bold" BorderThickness="2,2,2,2" Click="Visualizar_Usuarios_Click"/>
