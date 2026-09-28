@@ -109,7 +109,9 @@ namespace Sistema_Gerenciamento_Usuários
 
         private void Foto_Perfil(object sender, RoutedEventArgs e)
         {
-
+            FotoDePerfil janela = new FotoDePerfil();
+            janela.Show();
+            this.Close();
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
