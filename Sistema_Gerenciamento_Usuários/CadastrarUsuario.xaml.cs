@@ -11,6 +11,9 @@ namespace Sistema_Gerenciamento_Usuários
     {
         public string connectionString = "Server=localhost;Database=login;Uid=root;Pwd=;";
 
+        // 1. A variável AGORA começa vazia
+        private string avatarSelecionado = string.Empty;
+
         public CadastrarUsuario()
         {
             InitializeComponent();
@@ -23,6 +26,7 @@ namespace Sistema_Gerenciamento_Usuários
             Email_Usuario.Clear();
             Senha_Usuario.Clear();
             Confirmar_Senha.Clear();
+            avatarSelecionado = string.Empty;
         }
 
         private void Cadastrar_Click(object sender, RoutedEventArgs e)
@@ -32,6 +36,12 @@ namespace Sistema_Gerenciamento_Usuários
             string email = Email_Usuario.Text.Trim();
             string senha = Senha_Usuario.Password.Trim();
             string confirmarSenha = Confirmar_Senha.Password.Trim();
+
+            if (string.IsNullOrEmpty(avatarSelecionado))
+            {
+                MessageBox.Show("Escolha uma foto de perfil!", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
             if (string.IsNullOrEmpty(nomeCompleto))
             {
@@ -72,7 +82,7 @@ namespace Sistema_Gerenciamento_Usuários
                     using (MySqlCommand comandoCheck = new MySqlCommand(queryCheck, conexao))
                     {
                         comandoCheck.Parameters.AddWithValue("@usuario", usuario);
-                        long usuarioExiste = (long)comandoCheck.ExecuteScalar();
+                        long usuarioExiste = Convert.ToInt64(comandoCheck.ExecuteScalar());
 
                         if (usuarioExiste > 0)
                         {
@@ -83,8 +93,8 @@ namespace Sistema_Gerenciamento_Usuários
 
                     string senhaCriptografada = BCrypt.Net.BCrypt.HashPassword(senha);
 
-                    string queryInsert = "INSERT INTO usuarios (nome_completo, email, nome_usuario, senha, IsAdmin, bloqueado, tentativas_falhas) " +
-                                        "VALUES (@nomeCompleto, @email, @usuario, @senha, @IsAdmin, 0, 0)";
+                    string queryInsert = "INSERT INTO usuarios (nome_completo, email, nome_usuario, senha, IsAdmin, bloqueado, tentativas_falhas, avatar) " +
+                                        "VALUES (@nomeCompleto, @email, @usuario, @senha, @IsAdmin, 0, 0, @avatar)";
 
                     using (MySqlCommand comandoInsert = new MySqlCommand(queryInsert, conexao))
                     {
@@ -92,7 +102,8 @@ namespace Sistema_Gerenciamento_Usuários
                         comandoInsert.Parameters.AddWithValue("@email", email);
                         comandoInsert.Parameters.AddWithValue("@usuario", usuario);
                         comandoInsert.Parameters.AddWithValue("@senha", senhaCriptografada);
-                        comandoInsert.Parameters.AddWithValue("@IsAdmin", false); 
+                        comandoInsert.Parameters.AddWithValue("@IsAdmin", false);
+                        comandoInsert.Parameters.AddWithValue("@avatar", avatarSelecionado);
 
                         comandoInsert.ExecuteNonQuery();
                     }
@@ -107,16 +118,28 @@ namespace Sistema_Gerenciamento_Usuários
             }
         }
 
-        private void Foto_Perfil(object sender, RoutedEventArgs e)
-        {
-            FotoDePerfil janela = new FotoDePerfil();
-            janela.Show();
-            this.Close();
-        }
-
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
+        }
+
+        private void Foto_Perfil_Click(object sender, RoutedEventArgs e)
+        {
+            FotoDePerfil janelaFoto = new FotoDePerfil();
+
+            if (janelaFoto.ShowDialog() == true)
+            {
+                avatarSelecionado = janelaFoto.fotoSelecionada;
+
+                MessageBox.Show("Foto selecionada com sucesso!", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void Voltar_Click(object sender, RoutedEventArgs e)
+        {
+            Tela_de_Admin janela = new Tela_de_Admin();
+            janela.Show();
+            this.Close();
         }
     }
 }

@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Sistema_Gerenciamento_Usuários"
         mc:Ignorable="d"
-        Title="CadastrarUsuario" Height="450" Width="800">
-    <Grid>
+        Title="CadastrarUsuario" Height="450" Width="800" Background="#FF545454">
+    <Grid Margin="0,0,0,-16">
         <Grid.Background>
             <ImageBrush ImageSource="pack://application:,,,/Imagens/Cadastro de Usuário.png"/>
         </Grid.Background>
@@ -21,7 +21,8 @@
         <Label x:Name="SenhaUsuario" Content="Senha do Usuário" HorizontalAlignment="Center" Height="33" Margin="0,237,0,0" VerticalAlignment="Top" Width="376" FontSize="20" FontFamily="Rockwell Extra Bold"/>
         <Label x:Name="ConfirmarSenha" Content="Confirmar Senha" HorizontalAlignment="Center" Height="40" Margin="0,295,0,0" VerticalAlignment="Top" Width="376" FontSize="20" FontFamily="Rockwell Extra Bold"/>
         <Button x:Name="Cadastrar" Content="CADASTRAR" HorizontalAlignment="Left" Height="40" Margin="135,367,0,0" VerticalAlignment="Top" Width="236" Foreground="White" Background="#FF228B00" BorderBrush="Black" FontSize="30" FontFamily="Rockwell Extra Bold" Click="Cadastrar_Click"/>
-        <Button x:Name="Foto_Perfil" Content="FOTO DE PERFIL" Click="Foto_Perfil" Margin="429,367,135,27" Background="#FF545454" Foreground="White" FontWeight="Bold" BorderBrush="Black" FontFamily="Rockwell Extra Bold" FontSize="22"/>
+        <Button x:Name="Foto_Perfil" Content="FOTO DE PERFIL" Click="Foto_Perfil_Click" Margin="429,367,135,0" Background="#FF545454" Foreground="White" FontWeight="Bold" BorderBrush="Black" FontFamily="Rockwell Extra Bold" FontSize="22" Height="40" VerticalAlignment="Top"/>
+        <Button x:Name="Voltar" Content="VOLTAR" HorizontalAlignment="Left" Height="31" Margin="84,21,0,0" VerticalAlignment="Top" Width="64" Background="White" BorderBrush="Black" FontFamily="Rockwell Extra Bold" Click="Voltar_Click"/>
 
     </Grid>
 </Window>

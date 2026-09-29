@@ -6,7 +6,20 @@
         xmlns:local="clr-namespace:Sistema_Gerenciamento_Usuários"
         mc:Ignorable="d"
         Title="FotoDePerfil" Height="450" Width="800">
-    <Grid>
-        
+    <Grid Margin="0,0,0,-25">
+        <Grid.Background>
+            <ImageBrush ImageSource="/Imagens/Tela Foto Perfil.png"/>
+        </Grid.Background>
+        <Image Margin="118,77,522,0" Source="/Imagens/Usuario 1.png" Stretch="Fill" Tag="Usuario 1.png" MouseDown="Avatar_Click" Cursor="Hand" Height="147" VerticalAlignment="Top"/>
+        <Image Margin="0,74,325,0" Source="/Imagens/Usuario 2.png" Stretch="Fill" Tag="Usuario 2.png" MouseDown="Avatar_Click" Cursor="Hand" Height="154" VerticalAlignment="Top" HorizontalAlignment="Right" Width="165"/>
+        <Image Margin="520,76,120,0" Source="/Imagens/Usuario 3.png" Stretch="Fill" Tag="Usuario 3.png" MouseDown="Avatar_Click" Cursor="Hand" Height="150" VerticalAlignment="Top"/>
+        <Image Margin="198,238,436,0" Source="/Imagens/Usuario 4.png" Stretch="Fill" Tag="Usuario 4.png" MouseDown="Avatar_Click" Cursor="Hand" Height="150" VerticalAlignment="Top"/>
+        <Image Margin="443,238,200,0" Source="/Imagens/Usuario 5.png" Stretch="Fill" Tag="Usuario 5.png" MouseDown="Avatar_Click" Cursor="Hand" Height="150" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Height="19" Margin="153,224,0,0" TextWrapping="Wrap" Text="USUÁRIO 1" VerticalAlignment="Top" Width="90" FontSize="15" FontFamily="Rockwell Extra Bold"/>
+        <TextBlock HorizontalAlignment="Right" Height="18" Margin="0,229,359,0" TextWrapping="Wrap" Text="USUÁRIO 2" VerticalAlignment="Top" Width="90" FontSize="15" FontFamily="Rockwell Extra Bold"/>
+        <TextBlock HorizontalAlignment="Left" Height="19" Margin="557,223,0,0" TextWrapping="Wrap" Text="USUÁRIO 3" VerticalAlignment="Top" Width="90" FontSize="15" FontFamily="Rockwell Extra Bold"/>
+        <TextBlock HorizontalAlignment="Left" Height="19" Margin="236,388,0,0" TextWrapping="Wrap" Text="USUÁRIO 4" VerticalAlignment="Top" Width="90" FontSize="15" FontFamily="Rockwell Extra Bold"/>
+        <TextBlock HorizontalAlignment="Left" Height="19" Margin="483,388,0,0" TextWrapping="Wrap" Text="USUÁRIO 5" VerticalAlignment="Top" Width="90" FontSize="15" FontFamily="Rockwell Extra Bold"/>
+
     </Grid>
 </Window>

@@ -23,7 +23,7 @@ namespace Sistema_Gerenciamento_Usuários
 
         private void ENTRAR_Click(object sender, RoutedEventArgs e)
         {
-            Tela_Cadastro janela = new Tela_Cadastro();
+            Tela_de_Admin janela = new Tela_de_Admin();
             janela.Show();
             this.Close();
         }
