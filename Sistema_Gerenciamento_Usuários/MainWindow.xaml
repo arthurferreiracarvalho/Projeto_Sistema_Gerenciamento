@@ -11,7 +11,7 @@
         <Grid.Background>
             <ImageBrush ImageSource="pack://application:,,,/Imagens/Tela Central.png"/>
         </Grid.Background>
-        <Button x:Name="ENTRAR" Content=" ENTRAR " Height="91" Margin="224,276,0,0" VerticalAlignment="Top" Width="326" Click="ENTRAR_Click" BorderBrush="Black" FontFamily="Clarendon Blk BT" FontSize="55" Background="White" Foreground="Black" HorizontalAlignment="Left" BorderThickness="3,3,3,3"/>
+        <Button x:Name="ENTRAR" Content=" ENTRAR " Height="91" Margin="224,276,0,0" VerticalAlignment="Top" Width="326" Click="ENTRAR_Click" BorderBrush="Black" FontFamily="Rockwell Extra Bold" FontSize="55" Background="White" Foreground="Black" HorizontalAlignment="Left" BorderThickness="5,5,5,5"/>
         <TextBox x:Name="Central_de_Contas" HorizontalAlignment="Center" Height="70" Margin="0,166,0,0" TextWrapping="Wrap" Text="Central de Contas" VerticalAlignment="Top" Width="446" FontSize="40" FontFamily="Rockwell Extra Bold" BorderBrush="#FF545454" BorderThickness="5,5,5,5" TextChanged="TextBox_TextChanged"/>
         <TextBox x:Name="Seja_Bem_Vindo" HorizontalAlignment="Center" Height="55" Margin="0,99,0,0" TextWrapping="Wrap" Text="Seja Bem-Vindo!!" VerticalAlignment="Top" Width="418" FontSize="40" FontFamily="Rockwell Extra Bold" BorderBrush="White" BorderThickness="0,0,0,0" TextChanged="TextBox_TextChanged" Foreground="Black"/>
 

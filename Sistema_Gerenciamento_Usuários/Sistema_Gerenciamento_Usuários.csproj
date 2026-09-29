@@ -12,7 +12,6 @@
     <None Remove="Imagens\Cadastro de Usuário.png" />
     <None Remove="Imagens\Tela Central.png" />
     <None Remove="Imagens\Tela de Administrador.png" />
-    <None Remove="Imagens\Tela de Visualizar Usuario.png" />
     <None Remove="Imagens\Tela Entrar.png" />
     <None Remove="Imagens\Usuario 1.png" />
     <None Remove="Imagens\Usuario 2.png" />
@@ -31,7 +30,6 @@
     <Resource Include="Imagens\Cadastro de Usuário.png" />
     <Resource Include="Imagens\Tela Central.png" />
     <Resource Include="Imagens\Tela de Administrador.png" />
-    <Resource Include="Imagens\Tela de Visualizar Usuario.png" />
     <Resource Include="Imagens\Tela Entrar.png" />
     <Resource Include="Imagens\Tela Foto Perfil.png" />
     <Resource Include="Imagens\Usuario 1.png" />

@@ -37,7 +37,9 @@ namespace Sistema_Gerenciamento_Usuários
 
         private void Editar_usuarios_Click(object sender, RoutedEventArgs e)
         {
-
+            VisualizarUsuario telaVisualizar = new VisualizarUsuario();
+            telaVisualizar.Owner = this;
+            telaVisualizar.ShowDialog();
         }
 
         private void Excluir_usuarios_Click(object sender, RoutedEventArgs e)

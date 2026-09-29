@@ -11,6 +11,8 @@ namespace Sistema_Gerenciamento_Usuários
         public string Avatar { get; set; } = string.Empty;
         public bool IsAdmin { get; set; }
 
+        public bool Bloqueado { get; set; }
+
         public DateTime DataCriacao { get; set; }
         public DateTime DataUltimaAlteracao { get; set; }
         public DateTime? UltimoLogin { get; set; }
