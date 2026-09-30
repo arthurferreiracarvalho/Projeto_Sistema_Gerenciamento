@@ -1,14 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Sistema_Gerenciamento_Usuários
 {
@@ -17,6 +8,12 @@ namespace Sistema_Gerenciamento_Usuários
     /// </summary>
     public partial class Tela_de_Admin : Window
     {
+        private UsuarioModel usuarioLogado;
+        public Tela_de_Admin(UsuarioModel usuario)
+        {
+            InitializeComponent();
+            usuarioLogado = usuario;
+        }
         public Tela_de_Admin()
         {
             InitializeComponent();
@@ -32,6 +29,7 @@ namespace Sistema_Gerenciamento_Usuários
         private void Visualizar_Usuarios_Click(object sender, RoutedEventArgs e)
         {
             VisualizarUsuario telaVisualizar = new VisualizarUsuario();
+            telaVisualizar.Owner = this;
             telaVisualizar.ShowDialog();
         }
 
@@ -44,12 +42,16 @@ namespace Sistema_Gerenciamento_Usuários
 
         private void Excluir_usuarios_Click(object sender, RoutedEventArgs e)
         {
-
+            ExcluirUsuario telaExcluir = new ExcluirUsuario(usuarioLogado);
+            telaExcluir.Owner = this;
+            telaExcluir.ShowDialog();
         }
 
         private void Ativar_Desativar_usuários_Click(object sender, RoutedEventArgs e)
         {
-
+            AtivarDesativarUsuario telaAtivarDesativar = new AtivarDesativarUsuario();
+            telaAtivarDesativar.Owner = this;
+            telaAtivarDesativar.ShowDialog();
         }
 
         private void Alterar_nivel_acesso_outros_usuarios_Click(object sender, RoutedEventArgs e)
@@ -67,5 +69,11 @@ namespace Sistema_Gerenciamento_Usuários
 
         }
 
+        private void Sair_Click(object sender, RoutedEventArgs e)
+        {
+            Tela_Cadastro janela = new Tela_Cadastro();
+            janela.Show();
+            this.Close();
+        }
     }
 }

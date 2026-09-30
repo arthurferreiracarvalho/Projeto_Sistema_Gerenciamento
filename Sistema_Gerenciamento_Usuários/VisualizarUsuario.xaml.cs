@@ -110,9 +110,9 @@ namespace Sistema_Gerenciamento_Usuários
             Border card = new Border
             {
                 Width = 230,
-                Height = 370,
+                Height = 325,
                 Margin = new Thickness(10),
-                Background = Brushes.White,
+                Background = Brushes.WhiteSmoke,
                 CornerRadius = new CornerRadius(10),
                 BorderBrush = new SolidColorBrush(Color.FromRgb(220, 220, 220)),
                 BorderThickness = new Thickness(1)
@@ -126,8 +126,8 @@ namespace Sistema_Gerenciamento_Usuários
 
             Image img = new Image
             {
-                Width = 70,
-                Height = 70,
+                Width = 80,
+                Height = 80,
                 Margin = new Thickness(0, 5, 0, 8)
             };
 
@@ -159,7 +159,7 @@ namespace Sistema_Gerenciamento_Usuários
             {
                 Text = string.IsNullOrEmpty(user.NomeCompleto) ? user.NomeUsuario : user.NomeCompleto,
                 FontWeight = FontWeights.Bold,
-                FontSize = 15,
+                FontSize = 16,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 TextTrimming = TextTrimming.CharacterEllipsis,
                 MaxWidth = 200
@@ -168,8 +168,8 @@ namespace Sistema_Gerenciamento_Usuários
             TextBlock txtUser = new TextBlock
             {
                 Text = $"@{user.NomeUsuario}",
-                Foreground = Brushes.Gray,
-                FontSize = 15,
+                Foreground = Brushes.DarkSlateGray,
+                FontSize = 16,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(0, 2, 0, 3)
             };
@@ -177,8 +177,8 @@ namespace Sistema_Gerenciamento_Usuários
             TextBlock txtEmail = new TextBlock
             {
                 Text = user.Email,
-                FontSize = 15,
-                Foreground = Brushes.DarkGray,
+                FontSize = 16,
+                Foreground = Brushes.DarkSlateGray,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 TextTrimming = TextTrimming.CharacterEllipsis,
                 MaxWidth = 200
@@ -188,7 +188,7 @@ namespace Sistema_Gerenciamento_Usuários
             {
                 Text = user.IsAdmin ? "ADMINISTRADOR" : "USUÁRIO",
                 FontWeight = FontWeights.Bold,
-                FontSize = 15,
+                FontSize = 17,
                 Foreground = user.IsAdmin ? Brushes.Red : Brushes.Blue,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(0, 5, 0, 2)
@@ -198,7 +198,7 @@ namespace Sistema_Gerenciamento_Usuários
             {
                 Text = user.Bloqueado ? "Status: INATIVO" : "Status: ATIVO",
                 FontWeight = FontWeights.Bold,
-                FontSize = 15,
+                FontSize = 16,
                 Foreground = user.Bloqueado ? Brushes.Red : Brushes.Green,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(0, 2, 0, 6)
@@ -207,7 +207,7 @@ namespace Sistema_Gerenciamento_Usuários
             TextBlock txtCriacao = new TextBlock
             {
                 Text = $"Criado em: {user.DataCriacao:dd/MM/yyyy}",
-                FontSize = 12,
+                FontSize = 13,
                 Foreground = Brushes.Gray,
                 HorizontalAlignment = HorizontalAlignment.Center
             };
@@ -219,7 +219,7 @@ namespace Sistema_Gerenciamento_Usuários
             TextBlock txtUltimoLogin = new TextBlock
             {
                 Text = textoLogin,
-                FontSize = 12,
+                FontSize = 13,
                 Foreground = Brushes.Gray,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(0, 2, 0, 6)
@@ -227,9 +227,14 @@ namespace Sistema_Gerenciamento_Usuários
 
             Button btnEditar = new Button
             {
-                Content = "Editar",
-                Width = 90,
-                Height = 26,
+                Content = "✏ EDITAR",
+                Width = 105,
+                Height = 30,
+                Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFD2D2D2")),
+                Foreground = Brushes.Black,
+                FontWeight = FontWeights.Bold,
+                FontSize = 18,
+                Cursor = System.Windows.Input.Cursors.Hand,
                 Margin = new Thickness(0, 5, 0, 0),
                 Tag = user
             };

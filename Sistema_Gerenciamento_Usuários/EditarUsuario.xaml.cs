@@ -1,18 +1,18 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using MySql.Data.MySqlClient;
 
 namespace Sistema_Gerenciamento_Usuários
 {
     public partial class EditarUsuario : Window
     {
         public string connectionString = "Server=localhost;Database=login;Uid=root;Pwd=;";
-        private UsuarioModel usuarioAtual;
+        private readonly UsuarioModel usuarioAtual;
 
-        private List<string> avataresDisponiveis = new List<string>
+        private readonly List<string> avataresDisponiveis = new List<string>
         {
             "Usuario 1.png",
             "Usuario 2.png",
@@ -34,8 +34,6 @@ namespace Sistema_Gerenciamento_Usuários
             NomeCompleto.Text = usuarioAtual.NomeCompleto;
             NomeUsuario.Text = usuarioAtual.NomeUsuario;
             EmailUsuario.Text = usuarioAtual.Email;
-            PerfilUsuario.SelectedIndex = usuarioAtual.IsAdmin ? 1 : 0;
-            StatusUsuario.SelectedIndex = usuarioAtual.Bloqueado ? 1 : 0;
 
             int idx = avataresDisponiveis.FindIndex(a => a.Equals(usuarioAtual.Avatar, StringComparison.OrdinalIgnoreCase));
             if (idx >= 0) indexAvatarAtual = idx;
@@ -98,7 +96,7 @@ namespace Sistema_Gerenciamento_Usuários
 
             try
             {
-                using (MySqlConnection conexao = new MySqlConnection(connectionString))
+                using (var conexao = new MySqlConnection(connectionString))
                 {
                     conexao.Open();
 
@@ -107,20 +105,15 @@ namespace Sistema_Gerenciamento_Usuários
                                     nome_usuario = @usuario, 
                                     email = @email, 
                                     avatar = @avatar, 
-                                    IsAdmin = @isAdmin, 
-                                    bloqueado = @bloqueado, 
-                                    data_ultima_alteracao = @dataAlteracao 
+                                    data_ultima_alteracao = NOW() 
                                     WHERE id = @id";
 
-                    using (MySqlCommand cmd = new MySqlCommand(query, conexao))
+                    using (var cmd = new MySqlCommand(query, conexao))
                     {
                         cmd.Parameters.AddWithValue("@nome", NomeCompleto.Text.Trim());
                         cmd.Parameters.AddWithValue("@usuario", NomeUsuario.Text.Trim());
                         cmd.Parameters.AddWithValue("@email", EmailUsuario.Text.Trim());
                         cmd.Parameters.AddWithValue("@avatar", avataresDisponiveis[indexAvatarAtual]);
-                        cmd.Parameters.AddWithValue("@isAdmin", PerfilUsuario.SelectedIndex == 1);
-                        cmd.Parameters.AddWithValue("@bloqueado", StatusUsuario.SelectedIndex == 1);
-                        cmd.Parameters.AddWithValue("@dataAlteracao", DateTime.Now);
                         cmd.Parameters.AddWithValue("@id", usuarioAtual.Id);
 
                         cmd.ExecuteNonQuery();
