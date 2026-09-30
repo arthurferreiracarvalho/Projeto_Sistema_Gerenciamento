@@ -73,7 +73,8 @@ namespace Sistema_Gerenciamento_Usuários
                 {
                     conexao.Open();
 
-                    string query = "SELECT id, senha, IsAdmin, bloqueado FROM usuarios WHERE nome_usuario = @usuario";
+                    // Consulta traz os dados completos do usuário incluindo o avatar
+                    string query = "SELECT id, nome_completo, nome_usuario, email, avatar, senha, IsAdmin, bloqueado FROM usuarios WHERE nome_usuario = @usuario";
 
                     using (MySqlCommand cmd = new MySqlCommand(query, conexao))
                     {
@@ -96,7 +97,22 @@ namespace Sistema_Gerenciamento_Usuários
 
                                 if (BCrypt.Net.BCrypt.Verify(senha, hashSenha))
                                 {
+                                    // Instancia o modelo preenchendo os dados do usuário autenticado
+                                    UsuarioModel usuarioLogado = new UsuarioModel
+                                    {
+                                        Id = id,
+                                        NomeCompleto = reader.IsDBNull(reader.GetOrdinal("nome_completo")) ? "" : reader.GetString("nome_completo"),
+                                        NomeUsuario = reader.GetString("nome_usuario"),
+                                        Email = reader.IsDBNull(reader.GetOrdinal("email")) ? "" : reader.GetString("email"),
+                                        Avatar = reader.IsDBNull(reader.GetOrdinal("avatar")) ? "Usuario 1.png" : reader.GetString("avatar"),
+                                        IsAdmin = isAdmin,
+                                        Bloqueado = bloqueado
+                                    };
+
                                     reader.Close();
+
+                                    // Define a sessão global para o sistema inteiro reconhecer quem está logado
+                                    SessaoSistema.UsuarioLogado = usuarioLogado;
 
                                     string updateSucesso = "UPDATE usuarios SET ultimo_login = NOW(), tentativas_falhas = 0 WHERE id = @id";
                                     using (MySqlCommand cmdUpdate = new MySqlCommand(updateSucesso, conexao))
@@ -107,7 +123,8 @@ namespace Sistema_Gerenciamento_Usuários
 
                                     if (isAdmin)
                                     {
-                                        Tela_de_Admin telaAdmin = new Tela_de_Admin();
+                                        // Passa a sessão do usuário logado para a Tela_de_Admin
+                                        Tela_de_Admin telaAdmin = new Tela_de_Admin(usuarioLogado);
                                         telaAdmin.Show();
                                     }
                                     else

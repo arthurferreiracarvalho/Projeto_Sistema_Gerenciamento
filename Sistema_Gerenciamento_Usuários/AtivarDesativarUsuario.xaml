@@ -17,10 +17,10 @@
 
             <Border Background="White" CornerRadius="8" BorderBrush="#CCCCCC" BorderThickness="1" Padding="15" Margin="0,0,0,15">
                 <StackPanel>
-                    <TextBlock Text="Nome de Usuário ou E-mail:" FontFamily="Rockwell Extra Bold" FontSize="13" Margin="0,0,0,8"/>
+                    <TextBlock Text="Nome de Usuário ou E-mail:" FontFamily="Rockwell Extra Bold" FontSize="15" Margin="0,0,0,8"/>
                     <TextBox x:Name="txtBuscar" Height="30" VerticalContentAlignment="Center" Margin="0,0,0,10" FontSize="13" KeyUp="txtBuscar_KeyUp"/>
                     <Button x:Name="btnBuscar" Content="🔍 BUSCAR USUÁRIO" Height="34" Background="#555555" Foreground="White" 
-                            FontFamily="Rockwell Extra Bold" FontSize="13" Cursor="Hand" Click="btnBuscar_Click" BorderBrush="Black"/>
+                            FontFamily="Rockwell Extra Bold" FontSize="15" Cursor="Hand" Click="btnBuscar_Click" BorderBrush="Black"/>
                 </StackPanel>
             </Border>
 

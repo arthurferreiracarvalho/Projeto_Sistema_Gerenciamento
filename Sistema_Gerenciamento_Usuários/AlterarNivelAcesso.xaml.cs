@@ -5,19 +5,19 @@ using MySql.Data.MySqlClient;
 
 namespace Sistema_Gerenciamento_Usuários
 {
-    public partial class ExcluirUsuario : Window
+    public partial class AlterarNivelAcesso : Window
     {
         private readonly string connectionString = "Server=localhost;Database=login;Uid=root;Pwd=;";
         private int usuarioIdEncontrado = -1;
         private bool usuarioEncontradoIsAdmin = false;
         private readonly UsuarioModel usuarioLogado;
 
-        public ExcluirUsuario()
+        public AlterarNivelAcesso()
         {
             InitializeComponent();
         }
 
-        public ExcluirUsuario(UsuarioModel logado) : this()
+        public AlterarNivelAcesso(UsuarioModel logado) : this()
         {
             usuarioLogado = logado;
         }
@@ -70,6 +70,8 @@ namespace Sistema_Gerenciamento_Usuários
                                 txtNomeCompleto.Text = $"Nome: {(string.IsNullOrEmpty(nomeCompleto) ? nomeUsuario : nomeCompleto)}";
                                 txtNomeUsuario.Text = $"Usuário: @{nomeUsuario}";
                                 txtEmail.Text = $"E-mail: {email}";
+                                txtNivelAtual.Text = $"Nível Atual: {(usuarioEncontradoIsAdmin ? "Administrador" : "Usuário Comum")}";
+                                btnAlternarNivel.Content = usuarioEncontradoIsAdmin ? "REBAIXAR PARA USUÁRIO COMUM" : "PROMOVER A ADMINISTRADOR";
                             }
                             else
                             {
@@ -93,13 +95,15 @@ namespace Sistema_Gerenciamento_Usuários
             txtNomeCompleto.Text = "Nome: -";
             txtNomeUsuario.Text = "Usuário: -";
             txtEmail.Text = "E-mail: -";
+            txtNivelAtual.Text = "Nível Atual: -";
+            btnAlternarNivel.Content = "ALTERAR PERMISSÃO";
         }
 
-        private void btnConfirmarExclusao_Click(object sender, RoutedEventArgs e)
+        private void btnAlternarNivel_Click(object sender, RoutedEventArgs e)
         {
             if (usuarioIdEncontrado == -1)
             {
-                MessageBox.Show("Busque um usuário válido antes de realizar a exclusão.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Busque um usuário válido antes de alterar o nível de acesso.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -110,36 +114,38 @@ namespace Sistema_Gerenciamento_Usuários
                 return;
             }
 
-            // REGRA 1: Apenas administradores podem executar a exclusão
+            // REGRA 1: Apenas administradores podem executar esta operação
             if (!usuarioLogado.IsAdmin)
             {
-                MessageBox.Show("Acesso negado! Apenas administradores podem excluir usuários.", "Permissão Negada", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show("Acesso negado! Apenas administradores podem alterar permissões.", "Permissão Negada", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
 
-            // REGRA 2: Impede excluir a própria conta logada
+            // REGRA 2: Impede alterar o próprio nível
             if (usuarioIdEncontrado == usuarioLogado.Id)
             {
-                MessageBox.Show("Você não pode excluir a sua própria conta enquanto estiver conectado ao sistema.", "Operação Não Permitida", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Você não pode alterar o seu próprio nível de acesso.", "Operação Não Permitida", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            // REGRA 3 (ADMIN SUPREMO): Ninguém exclui o Administrador de ID 1
+            // REGRA 3 (ADMIN SUPREMO): Ninguém altera o Administrador de ID 1
             if (usuarioIdEncontrado == 1)
             {
-                MessageBox.Show("Acesso Negado! O Administrador Principal do sistema (ID 1) é intocável e não pode ser excluído.", "Acesso Restrito", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show("Acesso Negado! O Administrador Principal do sistema (ID 1) é intocável e não pode ter suas permissões alteradas.", "Acesso Restrito", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
 
-            // REGRA 4 (HIERARQUIA): Admin com ID maior (criado depois) NÃO exclui usuário/admin com ID menor (criado antes)
+            // REGRA 4 (HIERARQUIA): Admin com ID maior (criado depois) NÃO altera Admin com ID menor (criado antes)
             if (usuarioLogado.Id > usuarioIdEncontrado)
             {
-                MessageBox.Show("Acesso Negado! Você não tem permissão hierárquica para excluir este usuário/administrador de maior hierarquia.", "Hierarquia Insuficiente", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show("Acesso Negado! Você não tem permissão hierárquica para alterar a permissão deste usuário/administrador de maior hierarquia.", "Hierarquia Insuficiente", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
 
-            // REGRA 5: Impede excluir o último administrador do sistema
-            if (usuarioEncontradoIsAdmin)
+            bool novoStatusIsAdmin = !usuarioEncontradoIsAdmin;
+
+            // REGRA 5: Impede rebaixar o último administrador do sistema
+            if (!novoStatusIsAdmin && usuarioEncontradoIsAdmin)
             {
                 try
                 {
@@ -154,7 +160,7 @@ namespace Sistema_Gerenciamento_Usuários
 
                             if (totalAdmins <= 1)
                             {
-                                MessageBox.Show("Não é possível excluir este usuário. O sistema deve possuir pelo menos um administrador cadastrado.", "Operação Não Permitida", MessageBoxButton.OK, MessageBoxImage.Stop);
+                                MessageBox.Show("Não é possível rebaixar este usuário. O sistema deve possuir pelo menos um administrador ativo.", "Operação Não Permitida", MessageBoxButton.OK, MessageBoxImage.Stop);
                                 return;
                             }
                         }
@@ -167,7 +173,10 @@ namespace Sistema_Gerenciamento_Usuários
                 }
             }
 
-            MessageBoxResult result = MessageBox.Show("Deseja realmente EXCLUIR este usuário permanentemente?", "Confirmar Exclusão", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            string acaoTexto = novoStatusIsAdmin ? "promover este usuário a Administrador" : "rebaixar este usuário para Usuário Comum";
+            string mensagemSucesso = novoStatusIsAdmin ? "Usuário promovido a Administrador com sucesso!" : "Nível de acesso alterado para Usuário Comum com sucesso!";
+
+            MessageBoxResult result = MessageBox.Show($"Deseja realmente {acaoTexto}?", "Confirmar Operação", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
@@ -176,21 +185,23 @@ namespace Sistema_Gerenciamento_Usuários
                     using (var conexao = new MySqlConnection(connectionString))
                     {
                         conexao.Open();
-                        string query = "DELETE FROM usuarios WHERE id = @id";
+                        string query = "UPDATE usuarios SET IsAdmin = @novoIsAdmin WHERE id = @id";
 
                         using (var cmd = new MySqlCommand(query, conexao))
                         {
+                            cmd.Parameters.AddWithValue("@novoIsAdmin", novoStatusIsAdmin ? 1 : 0);
                             cmd.Parameters.AddWithValue("@id", usuarioIdEncontrado);
+
                             cmd.ExecuteNonQuery();
                         }
                     }
 
-                    MessageBox.Show("Usuário excluído com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
-                    LimparCampos();
+                    MessageBox.Show(mensagemSucesso, "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                    BuscarUsuario();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Erro ao excluir usuário: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Erro ao alterar permissão: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }

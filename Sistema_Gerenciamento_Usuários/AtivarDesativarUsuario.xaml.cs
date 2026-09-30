@@ -11,10 +11,21 @@ namespace Sistema_Gerenciamento_Usuários
         private readonly string connectionString = "Server=localhost;Database=login;Uid=root;Pwd=;";
         private int usuarioIdEncontrado = -1;
         private bool statusAtualBloqueado = false;
+        private bool usuarioEncontradoIsAdmin = false;
 
+        // Propriedade para guardar o usuário logado
+        private readonly UsuarioModel usuarioLogado;
+
+        // Construtor padrão
         public AtivarDesativarUsuario()
         {
             InitializeComponent();
+        }
+
+        // Construtor que recebe o usuário logado
+        public AtivarDesativarUsuario(UsuarioModel logado) : this()
+        {
+            usuarioLogado = logado;
         }
 
         private void btnBuscar_Click(object sender, RoutedEventArgs e)
@@ -45,7 +56,7 @@ namespace Sistema_Gerenciamento_Usuários
                 using (var conexao = new MySqlConnection(connectionString))
                 {
                     conexao.Open();
-                    string query = "SELECT id, nome_completo, nome_usuario, email, bloqueado FROM usuarios WHERE nome_usuario = @termo OR email = @termo LIMIT 1";
+                    string query = "SELECT id, nome_completo, nome_usuario, email, bloqueado, IsAdmin FROM usuarios WHERE nome_usuario = @termo OR email = @termo LIMIT 1";
 
                     using (var cmd = new MySqlCommand(query, conexao))
                     {
@@ -60,6 +71,7 @@ namespace Sistema_Gerenciamento_Usuários
                                 string nomeUsuario = reader.GetString("nome_usuario");
 
                                 statusAtualBloqueado = reader.GetBoolean("bloqueado");
+                                usuarioEncontradoIsAdmin = reader.GetBoolean("IsAdmin");
 
                                 txtNomeCompleto.Text = $"Nome: {(string.IsNullOrEmpty(nomeCompleto) ? nomeUsuario : nomeCompleto)}";
                                 txtNomeUsuario.Text = $"Usuário: @{nomeUsuario}";
@@ -101,6 +113,7 @@ namespace Sistema_Gerenciamento_Usuários
         private void LimparCampos()
         {
             usuarioIdEncontrado = -1;
+            usuarioEncontradoIsAdmin = false;
             txtNomeCompleto.Text = "Nome: -";
             txtNomeUsuario.Text = "Usuário: -";
             txtStatusAtual.Text = "Status Atual: -";
@@ -112,8 +125,74 @@ namespace Sistema_Gerenciamento_Usuários
         {
             if (usuarioIdEncontrado == -1) return;
 
+            // REGRA 0: Valida se a sessão do usuário logado é válida
+            if (usuarioLogado == null)
+            {
+                MessageBox.Show("Sessão inválida! Não foi possível identificar o usuário logado.", "Erro de Permissão", MessageBoxButton.OK, MessageBoxImage.Stop);
+                return;
+            }
+
+            // REGRA 1: Apenas administradores podem executar a operação
+            if (!usuarioLogado.IsAdmin)
+            {
+                MessageBox.Show("Acesso negado! Apenas administradores podem alterar o status de usuários.", "Permissão Negada", MessageBoxButton.OK, MessageBoxImage.Stop);
+                return;
+            }
+
+            // REGRA 2: Não permitir atuar sobre a própria conta
+            if (usuarioIdEncontrado == usuarioLogado.Id)
+            {
+                MessageBox.Show("Você não pode alterar o status da sua própria conta enquanto estiver conectado ao sistema.", "Operação Não Permitida", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // REGRA 3 (ADMIN SUPREMO): Ninguém altera o Administrador de ID 1
+            if (usuarioIdEncontrado == 1)
+            {
+                MessageBox.Show("Acesso Negado! O Administrador Principal do sistema (ID 1) não pode ter seu status alterado.", "Acesso Restrito", MessageBoxButton.OK, MessageBoxImage.Stop);
+                return;
+            }
+
+            // REGRA 4 (HIERARQUIA): Admin com ID maior (criado depois) NÃO altera status de usuário/admin com ID menor (criado antes)
+            if (usuarioLogado.Id > usuarioIdEncontrado)
+            {
+                MessageBox.Show("Acesso Negado! Você não tem permissão hierárquica para alterar o status deste usuário/administrador de maior hierarquia.", "Hierarquia Insuficiente", MessageBoxButton.OK, MessageBoxImage.Stop);
+                return;
+            }
+
             bool novoStatusBloqueado = !statusAtualBloqueado;
+
+            // REGRA 5 (TRAVA DO ÚLTIMO ADMIN): Impede desativar o único administrador ativo do sistema
+            if (novoStatusBloqueado && usuarioEncontradoIsAdmin)
+            {
+                try
+                {
+                    using (var conexao = new MySqlConnection(connectionString))
+                    {
+                        conexao.Open();
+                        string queryContarAdmins = "SELECT COUNT(*) FROM usuarios WHERE IsAdmin = 1 AND bloqueado = 0";
+
+                        using (var cmd = new MySqlCommand(queryContarAdmins, conexao))
+                        {
+                            long totalAdminsAtivos = Convert.ToInt64(cmd.ExecuteScalar());
+
+                            if (totalAdminsAtivos <= 1)
+                            {
+                                MessageBox.Show("Não é possível desativar este usuário. O sistema deve possuir pelo menos um administrador ativo cadastrado.", "Operação Não Permitida", MessageBoxButton.OK, MessageBoxImage.Stop);
+                                return;
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao validar administradores ativos: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+            }
+
             string acaoTexto = novoStatusBloqueado ? "desativar" : "ativar";
+            string mensagemSucesso = novoStatusBloqueado ? "Usuário desativado com sucesso!" : "Usuário ativado com sucesso!";
 
             MessageBoxResult result = MessageBox.Show($"Deseja realmente {acaoTexto} este usuário?", "Confirmar Operação", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
@@ -137,7 +216,7 @@ namespace Sistema_Gerenciamento_Usuários
                         }
                     }
 
-                    MessageBox.Show($"Usuário {acaoTexto}do com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show(mensagemSucesso, "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
                     BuscarUsuario();
                 }
                 catch (Exception ex)
