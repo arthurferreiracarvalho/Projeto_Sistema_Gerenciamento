@@ -22,7 +22,6 @@ namespace Sistema_Gerenciamento_Usuários
 
         private void Cadastrar_usuarios_Click(object sender, RoutedEventArgs e)
         {
-            // Abre a tela de cadastro como modal mantendo o Admin em segundo plano
             CadastrarUsuario janela = new CadastrarUsuario();
             janela.Owner = this;
             janela.ShowDialog();
@@ -44,7 +43,6 @@ namespace Sistema_Gerenciamento_Usuários
 
         private void Excluir_usuarios_Click(object sender, RoutedEventArgs e)
         {
-            // Repassa o usuarioLogado para aplicar as travas de hierarquia de ID
             ExcluirUsuario telaExcluir = new ExcluirUsuario(usuarioLogado);
             telaExcluir.Owner = this;
             telaExcluir.ShowDialog();
@@ -52,7 +50,6 @@ namespace Sistema_Gerenciamento_Usuários
 
         private void Ativar_Desativar_usuários_Click(object sender, RoutedEventArgs e)
         {
-            // Repassa o usuarioLogado para aplicar as travas de hierarquia de ID
             AtivarDesativarUsuario telaAtivarDesativar = new AtivarDesativarUsuario(usuarioLogado);
             telaAtivarDesativar.Owner = this;
             telaAtivarDesativar.ShowDialog();
@@ -60,7 +57,6 @@ namespace Sistema_Gerenciamento_Usuários
 
         private void Alterar_nivel_acesso_outros_usuarios_Click(object sender, RoutedEventArgs e)
         {
-            // Repassa o usuarioLogado para aplicar as travas de hierarquia de ID
             AlterarNivelAcesso telaAlterarNivel = new AlterarNivelAcesso(usuarioLogado);
             telaAlterarNivel.Owner = this;
             telaAlterarNivel.ShowDialog();
@@ -68,17 +64,20 @@ namespace Sistema_Gerenciamento_Usuários
 
         private void Redefinir_senha_usuarios_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Funcionalidade de redefinição de senha em desenvolvimento.", "Em Breve", MessageBoxButton.OK, MessageBoxImage.Information);
+            UsuarioModel adminAtual = this.usuarioLogado ?? SessaoSistema.UsuarioLogado;
+            RedefinirSenhaUsuario telaRedefinir = new RedefinirSenhaUsuario(adminAtual);
+            telaRedefinir.Owner = this;
+            telaRedefinir.ShowDialog();
         }
 
         private void Consultar_registros_auditoria_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Funcionalidade de consulta de auditoria em desenvolvimento.", "Em Breve", MessageBoxButton.OK, MessageBoxImage.Information);
+            
         }
 
         private void Sair_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult resultado = MessageBox.Show("Deseja realmente encerar a sessão e sair?", "Confirmar Logout", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult resultado = MessageBox.Show("Deseja realmente encerrar a sessão e sair?", "Confirmar Saída", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (resultado == MessageBoxResult.Yes)
             {

@@ -30,7 +30,7 @@
 
                 <Button x:Name="btnBuscar" Content="🔍 BUSCAR USUÁRIO" Height="35" 
                         Background="#4A4A4A" Foreground="White" FontWeight="Bold" 
-                        Cursor="Hand" Click="btnBuscar_Click" Margin="0,0,0,20" FontSize="15" FontFamily="Rockwell Extra Bold" BorderBrush="Black"/>
+                        Cursor="Hand" Click="btnBuscar_Click" Margin="0,0,0,20" FontSize="18" FontFamily="Rockwell Extra Bold" BorderBrush="Black"/>
 
                 <Separator Margin="0,0,0,15"/>
 

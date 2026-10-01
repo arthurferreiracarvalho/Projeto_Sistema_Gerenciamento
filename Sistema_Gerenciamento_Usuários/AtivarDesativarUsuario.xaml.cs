@@ -13,16 +13,13 @@ namespace Sistema_Gerenciamento_Usuários
         private bool statusAtualBloqueado = false;
         private bool usuarioEncontradoIsAdmin = false;
 
-        // Propriedade para guardar o usuário logado
         private readonly UsuarioModel usuarioLogado;
 
-        // Construtor padrão
         public AtivarDesativarUsuario()
         {
             InitializeComponent();
         }
 
-        // Construtor que recebe o usuário logado
         public AtivarDesativarUsuario(UsuarioModel logado) : this()
         {
             usuarioLogado = logado;
@@ -125,44 +122,38 @@ namespace Sistema_Gerenciamento_Usuários
         {
             if (usuarioIdEncontrado == -1) return;
 
-            // REGRA 0: Valida se a sessão do usuário logado é válida
             if (usuarioLogado == null)
             {
-                MessageBox.Show("Sessão inválida! Não foi possível identificar o usuário logado.", "Erro de Permissão", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show("Operação inválida! Não foi possível identificar o usuário logado.", "Erro", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
 
-            // REGRA 1: Apenas administradores podem executar a operação
             if (!usuarioLogado.IsAdmin)
             {
-                MessageBox.Show("Acesso negado! Apenas administradores podem alterar o status de usuários.", "Permissão Negada", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show("Acesso negado! Apenas administradores podem alterar o status de usuários.", "Operação inválida!", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
 
-            // REGRA 2: Não permitir atuar sobre a própria conta
             if (usuarioIdEncontrado == usuarioLogado.Id)
             {
-                MessageBox.Show("Você não pode alterar o status da sua própria conta enquanto estiver conectado ao sistema.", "Operação Não Permitida", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Você não pode alterar o status da sua própria conta enquanto estiver conectado ao sistema.", "Operação inválida!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            // REGRA 3 (ADMIN SUPREMO): Ninguém altera o Administrador de ID 1
             if (usuarioIdEncontrado == 1)
             {
-                MessageBox.Show("Acesso Negado! O Administrador Principal do sistema (ID 1) não pode ter seu status alterado.", "Acesso Restrito", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show("Acesso Negado! O Administrador Principal do sistema não pode ter suas permissões alteradas.", "Operação inválida!", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
 
-            // REGRA 4 (HIERARQUIA): Admin com ID maior (criado depois) NÃO altera status de usuário/admin com ID menor (criado antes)
             if (usuarioLogado.Id > usuarioIdEncontrado)
             {
-                MessageBox.Show("Acesso Negado! Você não tem permissão hierárquica para alterar o status deste usuário/administrador de maior hierarquia.", "Hierarquia Insuficiente", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show("Acesso Negado! Você não tem permissão para alterar a permissão deste admistrador.", "Operação Inválida!", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
 
             bool novoStatusBloqueado = !statusAtualBloqueado;
 
-            // REGRA 5 (TRAVA DO ÚLTIMO ADMIN): Impede desativar o único administrador ativo do sistema
             if (novoStatusBloqueado && usuarioEncontradoIsAdmin)
             {
                 try
@@ -178,7 +169,7 @@ namespace Sistema_Gerenciamento_Usuários
 
                             if (totalAdminsAtivos <= 1)
                             {
-                                MessageBox.Show("Não é possível desativar este usuário. O sistema deve possuir pelo menos um administrador ativo cadastrado.", "Operação Não Permitida", MessageBoxButton.OK, MessageBoxImage.Stop);
+                                MessageBox.Show("Não é possível desativar este usuário. O sistema deve possuir pelo menos 1 administrador ativo cadastrado.", "Operação inválida!", MessageBoxButton.OK, MessageBoxImage.Stop);
                                 return;
                             }
                         }
@@ -216,7 +207,7 @@ namespace Sistema_Gerenciamento_Usuários
                         }
                     }
 
-                    MessageBox.Show(mensagemSucesso, "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show(mensagemSucesso, "Sucesso!", MessageBoxButton.OK, MessageBoxImage.Information);
                     BuscarUsuario();
                 }
                 catch (Exception ex)

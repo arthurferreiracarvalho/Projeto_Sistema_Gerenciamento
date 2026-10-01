@@ -11,8 +11,6 @@ namespace Sistema_Gerenciamento_Usuários
         public string connectionString = "Server=localhost;Database=login;Uid=root;Pwd=;";
         private readonly UsuarioModel usuarioLogado;
         private readonly int usuarioIdParaEditar;
-
-        // Lista de imagens padrão disponíveis para navegação
         private readonly string[] imagensPadrao = new string[]
         {
             "Usuario 1.png",
@@ -29,7 +27,6 @@ namespace Sistema_Gerenciamento_Usuários
             InitializeComponent();
         }
 
-        // Construtor chamado a partir da janela VisualizarUsuario
         public EditarUsuario(UsuarioModel logado, int idParaEditar) : this()
         {
             usuarioLogado = logado;
@@ -65,8 +62,6 @@ namespace Sistema_Gerenciamento_Usuários
                                     NomeUsuario.Text = reader.IsDBNull(reader.GetOrdinal("nome_usuario")) ? "" : reader.GetString("nome_usuario");
 
                                 string avatarBanco = reader.IsDBNull(reader.GetOrdinal("avatar")) ? "Usuario 1.png" : reader.GetString("avatar");
-
-                                // Define o índice da imagem atual com base no banco
                                 string nomeCurto = Path.GetFileName(avatarBanco);
                                 int pos = Array.IndexOf(imagensPadrao, nomeCurto);
                                 if (pos >= 0)
@@ -152,23 +147,21 @@ namespace Sistema_Gerenciamento_Usuários
             string txtEmail = EmailUsuario != null ? EmailUsuario.Text.Trim() : "";
             string txtNome = NomeCompleto != null ? NomeCompleto.Text.Trim() : "";
 
-            // Validações
             if (string.IsNullOrWhiteSpace(txtUsuario) || string.IsNullOrWhiteSpace(txtEmail))
             {
-                MessageBox.Show("Por favor, preencha os campos obrigatórios (Nome de Usuário e E-mail).", "Campos Obrigatórios", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Por favor, preencha os campos obrigatórios (Nome de Usuário e E-mail).", "Campos Obrigatórios!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            // Regras de Segurança Antecipada
             if (usuarioIdParaEditar == 1 && (usuarioLogado == null || usuarioLogado.Id != 1))
             {
-                MessageBox.Show("Acesso Negado! As informações do Administrador Principal (ID 1) não podem ser alteradas por outros utilizadores.", "Acesso Restrito", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show("Acesso Negado! As informações do Administrador Principal não podem ser alteradas.", "Operação inválida!", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
 
             if (usuarioLogado != null && usuarioLogado.Id > usuarioIdParaEditar)
             {
-                MessageBox.Show("Acesso Negado! A sua hierarquia não permite guardar alterações neste utilizador.", "Hierarquia Insuficiente", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show("Acesso Negado! Você não pode alterar as informações desse administrador.", "Operação inválida!", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
 
@@ -201,7 +194,7 @@ namespace Sistema_Gerenciamento_Usuários
 
                         if (linhasAfetadas > 0)
                         {
-                            MessageBox.Show("Utilizador atualizado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                            MessageBox.Show("Utilizador atualizado com sucesso!", "Sucesso!", MessageBoxButton.OK, MessageBoxImage.Information);
                             this.DialogResult = true;
                             this.Close();
                         }

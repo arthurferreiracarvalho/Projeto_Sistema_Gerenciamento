@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Sistema_Gerenciamento_Usuários"
         mc:Ignorable="d"
         Title="Tela_Cadastro" Height="450" Width="800">
-    <Grid>
+    <Grid Margin="0,0,0,-6">
         <Grid.Background>
             <ImageBrush ImageSource="pack://application:,,,/Imagens/Tela Entrar.png"/>
         </Grid.Background>

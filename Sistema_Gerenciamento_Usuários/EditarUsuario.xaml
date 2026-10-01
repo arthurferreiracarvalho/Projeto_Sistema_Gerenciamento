@@ -12,7 +12,6 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Título principal -->
         <TextBlock Text="Editar Informações do Usuário" 
                    FontSize="18" 
                    FontWeight="Bold" 
@@ -21,7 +20,6 @@
                    HorizontalAlignment="Center" 
                    FontFamily="Rockwell Extra Bold"/>
 
-        <!-- Formulário do Usuário -->
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,5">
             <StackPanel Margin="10,0">
 
@@ -29,7 +27,7 @@
                            FontWeight="SemiBold" 
                            Margin="0,5,0,5" 
                            FontFamily="Rockwell Extra Bold" 
-                           FontSize="13"/>
+                           FontSize="15"/>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,5">
                     <Button x:Name="AnteriorFoto" Content="◀" Width="32" Height="32" Click="AnteriorFoto_Click" Margin="0,0,10,0" Cursor="Hand"/>
@@ -39,19 +37,18 @@
 
                 <TextBlock x:Name="NomePerfil" HorizontalAlignment="Center" Foreground="Gray" FontSize="11" Margin="0,0,0,12"/>
 
-                <TextBlock Text="Nome Completo:" FontWeight="SemiBold" Margin="0,5,0,3" FontFamily="Rockwell Extra Bold"/>
-                <TextBox x:Name="NomeCompleto" Height="30" VerticalContentAlignment="Center" Padding="5,0"/>
+                <TextBlock Text="Nome Completo:" FontWeight="SemiBold" Margin="0,5,0,3" FontFamily="Rockwell Extra Bold" FontSize="15"/>
+                <TextBox x:Name="NomeCompleto" Height="30" VerticalContentAlignment="Center" Padding="5,0" BorderBrush="Black"/>
 
-                <TextBlock Text="Nome de Usuário:" FontWeight="SemiBold" Margin="0,10,0,3" FontFamily="Rockwell Extra Bold"/>
-                <TextBox x:Name="NomeUsuario" Height="30" VerticalContentAlignment="Center" Padding="5,0"/>
+                <TextBlock Text="Nome de Usuário:" FontWeight="SemiBold" Margin="0,10,0,3" FontFamily="Rockwell Extra Bold" FontSize="15"/>
+                <TextBox x:Name="NomeUsuario" Height="30" VerticalContentAlignment="Center" Padding="5,0" BorderBrush="Black"/>
 
-                <TextBlock Text="E-mail:" FontWeight="SemiBold" Margin="0,10,0,3" FontFamily="Rockwell Extra Bold"/>
-                <TextBox x:Name="EmailUsuario" Height="30" VerticalContentAlignment="Center" Padding="5,0"/>
+                <TextBlock Text="E-mail:" FontWeight="SemiBold" Margin="0,10,0,3" FontFamily="Rockwell Extra Bold" FontSize="15"/>
+                <TextBox x:Name="EmailUsuario" Height="30" VerticalContentAlignment="Center" Padding="5,0" BorderBrush="#FF080808"/>
 
             </StackPanel>
         </ScrollViewer>
 
-        <!-- Botões de Ação na parte inferior -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,10,0">
             <Button x:Name="Cancelar" 
                     Content="Cancelar" 
@@ -59,19 +56,19 @@
                     Click="Cancelar_Click" 
                     Margin="0,0,10,0" 
                     FontFamily="Rockwell Extra Bold" 
-                    FontSize="13" 
-                    Cursor="Hand"/>
+                    FontSize="15" 
+                    Cursor="Hand" BorderBrush="Black"/>
 
             <Button x:Name="Salvar" 
                     Content="Salvar Alterações" 
-                    Width="150" Height="34" 
+                    Width="167" Height="34" 
                     Background="#007ACC" 
                     Foreground="White" 
                     FontWeight="Bold" 
                     Click="Salvar_Click" 
                     FontFamily="Rockwell Extra Bold" 
-                    FontSize="13" 
-                    Cursor="Hand"/>
+                    FontSize="15" 
+                    Cursor="Hand" BorderBrush="Black"/>
         </StackPanel>
     </Grid>
 </Window>

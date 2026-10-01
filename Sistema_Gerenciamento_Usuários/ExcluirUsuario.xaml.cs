@@ -103,42 +103,36 @@ namespace Sistema_Gerenciamento_Usuários
                 return;
             }
 
-            // REGRA 0: Valida se a sessão do usuário logado é válida
             if (usuarioLogado == null)
             {
-                MessageBox.Show("Sessão inválida! Não foi possível identificar o usuário logado.", "Erro de Permissão", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show("Operação inválida! Não foi possível identificar o usuário logado.", "Erro", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
 
-            // REGRA 1: Apenas administradores podem executar a exclusão
             if (!usuarioLogado.IsAdmin)
             {
-                MessageBox.Show("Acesso negado! Apenas administradores podem excluir usuários.", "Permissão Negada", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show("Acesso negado! Apenas administradores podem excluir usuários.", "Operação inválida!", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
 
-            // REGRA 2: Impede excluir a própria conta logada
             if (usuarioIdEncontrado == usuarioLogado.Id)
             {
-                MessageBox.Show("Você não pode excluir a sua própria conta enquanto estiver conectado ao sistema.", "Operação Não Permitida", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Você não pode excluir a sua própria conta enquanto estiver conectado ao sistema.", "Operação inválida!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            // REGRA 3 (ADMIN SUPREMO): Ninguém exclui o Administrador de ID 1
             if (usuarioIdEncontrado == 1)
             {
-                MessageBox.Show("Acesso Negado! O Administrador Principal do sistema (ID 1) é intocável e não pode ser excluído.", "Acesso Restrito", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show("Acesso Negado! O Administrador Principal do sistema não pode ser excluído.", "Operação inválida!", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
 
-            // REGRA 4 (HIERARQUIA): Admin com ID maior (criado depois) NÃO exclui usuário/admin com ID menor (criado antes)
             if (usuarioLogado.Id > usuarioIdEncontrado)
             {
-                MessageBox.Show("Acesso Negado! Você não tem permissão hierárquica para excluir este usuário/administrador de maior hierarquia.", "Hierarquia Insuficiente", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show("Acesso Negado! Você não tem permissão para excluir este administrador.", "Operação inválida!", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
 
-            // REGRA 5: Impede excluir o último administrador do sistema
             if (usuarioEncontradoIsAdmin)
             {
                 try
@@ -185,7 +179,7 @@ namespace Sistema_Gerenciamento_Usuários
                         }
                     }
 
-                    MessageBox.Show("Usuário excluído com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Usuário excluído com sucesso!", "Sucesso!", MessageBoxButton.OK, MessageBoxImage.Information);
                     LimparCampos();
                 }
                 catch (Exception ex)

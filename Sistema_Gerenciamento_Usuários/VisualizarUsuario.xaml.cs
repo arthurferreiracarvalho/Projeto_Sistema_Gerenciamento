@@ -13,12 +13,10 @@ namespace Sistema_Gerenciamento_Usuários
         public string connectionString = "Server=localhost;Database=login;Uid=root;Pwd=;";
         private readonly UsuarioModel usuarioLogado;
 
-        // Construtor sem parâmetros (agora encadeia para o construtor principal com a sessão global se existir)
         public VisualizarUsuario() : this(SessaoSistema.UsuarioLogado)
         {
         }
 
-        // Construtor principal para receber a sessão do utilizador logado
         public VisualizarUsuario(UsuarioModel logado)
         {
             InitializeComponent();
@@ -262,45 +260,35 @@ namespace Sistema_Gerenciamento_Usuários
             return card;
         }
 
-        // Evento de clique do botão EDITAR
         private void BtnEditar_Click(object sender, RoutedEventArgs e)
         {
             Button btn = sender as Button;
             if (btn != null && btn.Tag is UsuarioModel usuarioAlvo)
             {
-                // Regra 1: Se o alvo for o Administrador Principal (ID 1)
                 if (usuarioAlvo.Id == 1)
                 {
-                    // Permite a edição caso o usuário logado seja o próprio ID 1
-                    // Bloqueia apenas se houver outro usuário logado com ID diferente tentando editar o Admin Principal
                     if (usuarioLogado != null && usuarioLogado.Id != 1)
                     {
-                        MessageBox.Show("Acesso Negado! As informações e a foto do Administrador Principal (ID 1) não podem ser alteradas por outros utilizadores.", "Acesso Restrito", MessageBoxButton.OK, MessageBoxImage.Stop);
+                        MessageBox.Show("Acesso Negado! As informações do Administrador Principal não podem ser alteradas.", "Operação inválida!", MessageBoxButton.OK, MessageBoxImage.Stop);
                         return;
                     }
                 }
                 else
                 {
-                    // Regra 2: Para demais usuários, verifica hierarquia de ID (ID maior não edita ID menor)
                     if (usuarioLogado != null && usuarioLogado.Id > usuarioAlvo.Id)
                     {
-                        MessageBox.Show("Acesso Negado! A sua hierarquia não permite editar os dados deste utilizador.", "Hierarquia Insuficiente", MessageBoxButton.OK, MessageBoxImage.Stop);
+                        MessageBox.Show("Acesso Negado! Você não pode alterar as informações desse administrador.", "Operação inválida!", MessageBoxButton.OK, MessageBoxImage.Stop);
                         return;
                     }
                 }
 
-                // Abre a janela EditarUsuario repassando a sessão e o ID do utilizador selecionado
                 EditarUsuario telaEditar = new EditarUsuario(usuarioLogado, usuarioAlvo.Id);
                 telaEditar.Owner = this;
                 telaEditar.ShowDialog();
-
-                // Recarrega os cards atualizados
                 CarregarUsuariosCards();
             }
         }
     }
-
-    // Classe auxiliar de Sessão Global para manter o login ativo
     public static class SessaoSistema
     {
         public static UsuarioModel UsuarioLogado { get; set; }

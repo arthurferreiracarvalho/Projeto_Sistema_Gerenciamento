@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Sistema_Gerenciamento_Usuários"
         mc:Ignorable="d"
-        Title="CadastrarUsuario" Height="450" Width="800" Background="#FF545454">
-    <Grid Margin="0,0,0,-16">
+        Title="CadastrarUsuario" Height="481" Width="800" Background="#FF545454">
+    <Grid Margin="0,0,0,14">
         <Grid.Background>
             <ImageBrush ImageSource="pack://application:,,,/Imagens/Cadastro de Usuário.png"/>
         </Grid.Background>

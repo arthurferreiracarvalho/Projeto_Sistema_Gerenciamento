@@ -23,10 +23,10 @@
                     Margin="0,0,0,20">
                 <StackPanel>
                     <TextBlock Text="Nome de Usuário ou E-mail:" FontFamily="Rockwell Extra Bold" FontSize="15" Margin="0,0,0,5"/>
-                    <TextBox x:Name="txtBuscar" Height="28" VerticalContentAlignment="Center" Margin="0,0,0,10" FontFamily="Segoe UI"/>
+                    <TextBox x:Name="txtBuscar" Height="28" VerticalContentAlignment="Center" Margin="0,0,0,10" FontFamily="Segoe UI" BorderBrush="Black"/>
 
                     <Button x:Name="btnBuscar" Content="🔍 BUSCAR USUÁRIO" Height="30" Background="#FF565656" Foreground="White" 
-                            FontFamily="Rockwell Extra Bold" FontSize="18" Cursor="Hand" Click="btnBuscar_Click"/>
+                            FontFamily="Rockwell Extra Bold" FontSize="18" Cursor="Hand" Click="btnBuscar_Click" BorderBrush="Black"/>
                 </StackPanel>
             </Border>
 

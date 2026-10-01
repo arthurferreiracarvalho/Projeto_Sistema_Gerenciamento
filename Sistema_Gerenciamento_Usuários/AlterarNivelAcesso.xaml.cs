@@ -71,7 +71,7 @@ namespace Sistema_Gerenciamento_Usuários
                                 txtNomeUsuario.Text = $"Usuário: @{nomeUsuario}";
                                 txtEmail.Text = $"E-mail: {email}";
                                 txtNivelAtual.Text = $"Nível Atual: {(usuarioEncontradoIsAdmin ? "Administrador" : "Usuário Comum")}";
-                                btnAlternarNivel.Content = usuarioEncontradoIsAdmin ? "REBAIXAR PARA USUÁRIO COMUM" : "PROMOVER A ADMINISTRADOR";
+                                btnAlternarNivel.Content = usuarioEncontradoIsAdmin ? "ALTERAR PARA USUÁRIO" : "PROMOVER A ADMINISTRADOR";
                             }
                             else
                             {
@@ -107,44 +107,38 @@ namespace Sistema_Gerenciamento_Usuários
                 return;
             }
 
-            // REGRA 0: Valida se a sessão do usuário logado é válida
             if (usuarioLogado == null)
             {
-                MessageBox.Show("Sessão inválida! Não foi possível identificar o usuário logado.", "Erro de Permissão", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show("Operação inválida! Não foi possível identificar o usuário logado.", "Erro", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
 
-            // REGRA 1: Apenas administradores podem executar esta operação
             if (!usuarioLogado.IsAdmin)
             {
-                MessageBox.Show("Acesso negado! Apenas administradores podem alterar permissões.", "Permissão Negada", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show("Acesso negado! Apenas administradores podem alterar permissões.", "Operação inválida!", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
 
-            // REGRA 2: Impede alterar o próprio nível
             if (usuarioIdEncontrado == usuarioLogado.Id)
             {
-                MessageBox.Show("Você não pode alterar o seu próprio nível de acesso.", "Operação Não Permitida", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Você não pode alterar o seu próprio nível de acesso.", "Operação inválida!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            // REGRA 3 (ADMIN SUPREMO): Ninguém altera o Administrador de ID 1
             if (usuarioIdEncontrado == 1)
             {
-                MessageBox.Show("Acesso Negado! O Administrador Principal do sistema (ID 1) é intocável e não pode ter suas permissões alteradas.", "Acesso Restrito", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show("Acesso Negado! O Administrador Principal do sistema não pode ter suas permissões alteradas.", "Operação inválida!", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
 
-            // REGRA 4 (HIERARQUIA): Admin com ID maior (criado depois) NÃO altera Admin com ID menor (criado antes)
             if (usuarioLogado.Id > usuarioIdEncontrado)
             {
-                MessageBox.Show("Acesso Negado! Você não tem permissão hierárquica para alterar a permissão deste usuário/administrador de maior hierarquia.", "Hierarquia Insuficiente", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show("Acesso Negado! Você não tem permissão para alterar a permissão deste admistrador.", "Operação Inválida!", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
 
             bool novoStatusIsAdmin = !usuarioEncontradoIsAdmin;
 
-            // REGRA 5: Impede rebaixar o último administrador do sistema
             if (!novoStatusIsAdmin && usuarioEncontradoIsAdmin)
             {
                 try
@@ -160,7 +154,7 @@ namespace Sistema_Gerenciamento_Usuários
 
                             if (totalAdmins <= 1)
                             {
-                                MessageBox.Show("Não é possível rebaixar este usuário. O sistema deve possuir pelo menos um administrador ativo.", "Operação Não Permitida", MessageBoxButton.OK, MessageBoxImage.Stop);
+                                MessageBox.Show("Não é possivél alterar o acesso deste usuário. O sistema deve possuir pelo menos 1 administrador ativo cadastrado.", "Operação inválida!", MessageBoxButton.OK, MessageBoxImage.Stop);
                                 return;
                             }
                         }
@@ -173,8 +167,8 @@ namespace Sistema_Gerenciamento_Usuários
                 }
             }
 
-            string acaoTexto = novoStatusIsAdmin ? "promover este usuário a Administrador" : "rebaixar este usuário para Usuário Comum";
-            string mensagemSucesso = novoStatusIsAdmin ? "Usuário promovido a Administrador com sucesso!" : "Nível de acesso alterado para Usuário Comum com sucesso!";
+            string acaoTexto = novoStatusIsAdmin ? "promover este Usuário a Administrador" : "promover este Administrador a Usuário";
+            string mensagemSucesso = novoStatusIsAdmin ? "Usuário promovido a Administrador com sucesso!" : "Administrador promovido a Usuário com sucesso!";
 
             MessageBoxResult result = MessageBox.Show($"Deseja realmente {acaoTexto}?", "Confirmar Operação", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
@@ -196,7 +190,7 @@ namespace Sistema_Gerenciamento_Usuários
                         }
                     }
 
-                    MessageBox.Show(mensagemSucesso, "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show(mensagemSucesso, "Sucesso!", MessageBoxButton.OK, MessageBoxImage.Information);
                     BuscarUsuario();
                 }
                 catch (Exception ex)
