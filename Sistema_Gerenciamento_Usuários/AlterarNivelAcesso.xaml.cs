@@ -9,6 +9,7 @@ namespace Sistema_Gerenciamento_Usuários
     {
         private readonly string connectionString = "Server=localhost;Database=login;Uid=root;Pwd=;";
         private int usuarioIdEncontrado = -1;
+        private string usuarioNomeEncontrado = string.Empty;
         private bool usuarioEncontradoIsAdmin = false;
         private readonly UsuarioModel usuarioLogado;
 
@@ -67,6 +68,8 @@ namespace Sistema_Gerenciamento_Usuários
                                 string nomeUsuario = reader.GetString("nome_usuario");
                                 string email = reader.GetString("email");
 
+                                usuarioNomeEncontrado = nomeUsuario;
+
                                 txtNomeCompleto.Text = $"Nome: {(string.IsNullOrEmpty(nomeCompleto) ? nomeUsuario : nomeCompleto)}";
                                 txtNomeUsuario.Text = $"Usuário: @{nomeUsuario}";
                                 txtEmail.Text = $"E-mail: {email}";
@@ -91,6 +94,7 @@ namespace Sistema_Gerenciamento_Usuários
         private void LimparCampos()
         {
             usuarioIdEncontrado = -1;
+            usuarioNomeEncontrado = string.Empty;
             usuarioEncontradoIsAdmin = false;
             txtNomeCompleto.Text = "Nome: -";
             txtNomeUsuario.Text = "Usuário: -";
@@ -189,6 +193,15 @@ namespace Sistema_Gerenciamento_Usuários
                             cmd.ExecuteNonQuery();
                         }
                     }
+
+                    string nomeAdminLogado = usuarioLogado != null ? usuarioLogado.NomeUsuario : "SISTEMA";
+                    string novoNivel = novoStatusIsAdmin ? "Administrador" : "Usuário Comum";
+
+                    RegistrosAuditoria.RegistrarAcao(
+                        nomeAdminLogado,
+                        "ALTERAÇÃO DE PERMISSÃO",
+                        $"O administrador '{nomeAdminLogado}' alterou o nível de acesso do usuário '{usuarioNomeEncontrado}' para '{novoNivel}'."
+                    );
 
                     MessageBox.Show(mensagemSucesso, "Sucesso!", MessageBoxButton.OK, MessageBoxImage.Information);
                     BuscarUsuario();

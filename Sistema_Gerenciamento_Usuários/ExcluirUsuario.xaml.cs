@@ -10,6 +10,7 @@ namespace Sistema_Gerenciamento_Usuários
         private readonly string connectionString = "Server=localhost;Database=login;Uid=root;Pwd=;";
         private int usuarioIdEncontrado = -1;
         private bool usuarioEncontradoIsAdmin = false;
+        private string usuarioNomeEncontrado = string.Empty;
         private readonly UsuarioModel usuarioLogado;
 
         public ExcluirUsuario()
@@ -67,6 +68,8 @@ namespace Sistema_Gerenciamento_Usuários
                                 string nomeUsuario = reader.GetString("nome_usuario");
                                 string email = reader.GetString("email");
 
+                                usuarioNomeEncontrado = nomeUsuario;
+
                                 txtNomeCompleto.Text = $"Nome: {(string.IsNullOrEmpty(nomeCompleto) ? nomeUsuario : nomeCompleto)}";
                                 txtNomeUsuario.Text = $"Usuário: @{nomeUsuario}";
                                 txtEmail.Text = $"E-mail: {email}";
@@ -90,6 +93,7 @@ namespace Sistema_Gerenciamento_Usuários
         {
             usuarioIdEncontrado = -1;
             usuarioEncontradoIsAdmin = false;
+            usuarioNomeEncontrado = string.Empty;
             txtNomeCompleto.Text = "Nome: -";
             txtNomeUsuario.Text = "Usuário: -";
             txtEmail.Text = "E-mail: -";
@@ -178,6 +182,14 @@ namespace Sistema_Gerenciamento_Usuários
                             cmd.ExecuteNonQuery();
                         }
                     }
+
+                    string nomeAdminLogado = usuarioLogado != null ? usuarioLogado.NomeUsuario : "SISTEMA";
+
+                    RegistrosAuditoria.RegistrarAcao(
+                        nomeAdminLogado,
+                        "EXCLUSÃO",
+                        $"O administrador '{nomeAdminLogado}' excluiu o usuário '{usuarioNomeEncontrado}' (ID: {usuarioIdEncontrado})."
+                    );
 
                     MessageBox.Show("Usuário excluído com sucesso!", "Sucesso!", MessageBoxButton.OK, MessageBoxImage.Information);
                     LimparCampos();

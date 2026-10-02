@@ -7,13 +7,13 @@
             <TextBlock Text="REDEFINIR SENHA" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20" FontFamily="Rockwell Extra Bold"/>
 
             <TextBlock Text="Usuário ou E-mail:" FontSize="15" FontWeight="Bold" FontFamily="Rockwell Extra Bold"/>
-            <TextBox x:Name="UsuarioEmail" Height="30" FontSize="14" Margin="0,5,0,15" BorderBrush="Black"/>
+            <TextBox x:Name="UsuarioEmail" Height="30" FontSize="15" Margin="0,5,0,15" BorderBrush="Black"/>
 
             <TextBlock Text="Nova Senha:" FontSize="15" FontWeight="Bold" FontFamily="Rockwell Extra Bold"/>
-            <PasswordBox x:Name="NovaSenha" Height="30" FontSize="14" Margin="0,5,0,15" BorderBrush="Black"/>
+            <PasswordBox x:Name="NovaSenha" Height="30" FontSize="15" Margin="0,5,0,15" BorderBrush="Black"/>
 
             <TextBlock Text="Confirmar Nova Senha:" FontSize="15" FontWeight="Bold" FontFamily="Rockwell Extra Bold"/>
-            <PasswordBox x:Name="ConfirmarSenha" Height="30" FontSize="14" Margin="0,5,0,20" BorderBrush="Black"/>
+            <PasswordBox x:Name="ConfirmarSenha" Height="30" FontSize="15" Margin="0,5,0,20" BorderBrush="Black"/>
 
             <Button x:Name="btnRedefinir" Content="ALTERAR SENHA" Height="40" Background="#4CAF50" Foreground="White" FontWeight="Bold" FontSize="20" Click="btnRedefinir_Click" FontFamily="Rockwell Extra Bold" BorderBrush="Black"/>
         </StackPanel>

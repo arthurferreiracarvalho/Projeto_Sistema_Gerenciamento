@@ -3,9 +3,6 @@ using System.Windows;
 
 namespace Sistema_Gerenciamento_Usuários
 {
-    /// <summary>
-    /// Lógica interna para Tela_de_Admin.xaml
-    /// </summary>
     public partial class Tela_de_Admin : Window
     {
         private readonly UsuarioModel usuarioLogado;
@@ -72,7 +69,9 @@ namespace Sistema_Gerenciamento_Usuários
 
         private void Consultar_registros_auditoria_Click(object sender, RoutedEventArgs e)
         {
-            
+            ConsultarRegistros telaAuditoria = new ConsultarRegistros();
+            telaAuditoria.Owner = this;
+            telaAuditoria.ShowDialog();
         }
 
         private void Sair_Click(object sender, RoutedEventArgs e)

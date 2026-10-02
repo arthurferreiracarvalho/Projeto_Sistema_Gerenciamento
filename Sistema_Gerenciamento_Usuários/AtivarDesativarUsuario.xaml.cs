@@ -10,6 +10,7 @@ namespace Sistema_Gerenciamento_Usuários
     {
         private readonly string connectionString = "Server=localhost;Database=login;Uid=root;Pwd=;";
         private int usuarioIdEncontrado = -1;
+        private string usuarioNomeEncontrado = string.Empty;
         private bool statusAtualBloqueado = false;
         private bool usuarioEncontradoIsAdmin = false;
 
@@ -67,6 +68,7 @@ namespace Sistema_Gerenciamento_Usuários
                                 string nomeCompleto = reader.IsDBNull(reader.GetOrdinal("nome_completo")) ? "" : reader.GetString("nome_completo");
                                 string nomeUsuario = reader.GetString("nome_usuario");
 
+                                usuarioNomeEncontrado = nomeUsuario;
                                 statusAtualBloqueado = reader.GetBoolean("bloqueado");
                                 usuarioEncontradoIsAdmin = reader.GetBoolean("IsAdmin");
 
@@ -110,6 +112,7 @@ namespace Sistema_Gerenciamento_Usuários
         private void LimparCampos()
         {
             usuarioIdEncontrado = -1;
+            usuarioNomeEncontrado = string.Empty;
             usuarioEncontradoIsAdmin = false;
             txtNomeCompleto.Text = "Nome: -";
             txtNomeUsuario.Text = "Usuário: -";
@@ -206,6 +209,15 @@ namespace Sistema_Gerenciamento_Usuários
                             cmd.ExecuteNonQuery();
                         }
                     }
+
+                    string nomeAdminLogado = usuarioLogado != null ? usuarioLogado.NomeUsuario : "SISTEMA";
+                    string acaoStatus = novoStatusBloqueado ? "bloqueou/desativou" : "desbloqueou/ativou";
+
+                    RegistrosAuditoria.RegistrarAcao(
+                        nomeAdminLogado,
+                        "ALTERAÇÃO DE STATUS",
+                        $"O administrador '{nomeAdminLogado}' {acaoStatus} o usuário '{usuarioNomeEncontrado}' (ID: {usuarioIdEncontrado})."
+                    );
 
                     MessageBox.Show(mensagemSucesso, "Sucesso!", MessageBoxButton.OK, MessageBoxImage.Information);
                     BuscarUsuario();

@@ -10,13 +10,33 @@ namespace Sistema_Gerenciamento_Usuários
     public partial class CadastrarUsuario : Window
     {
         public string connectionString = "Server=localhost;Database=login;Uid=root;Pwd=;";
-
-        // 1. A variável AGORA começa vazia
         private string avatarSelecionado = string.Empty;
+        private string usuarioLogado = "SISTEMA";
+
+        public CadastrarUsuario(UsuarioModel logado) : this()
+        {
+            if (logado != null && !string.IsNullOrEmpty(logado.NomeUsuario))
+            {
+                this.usuarioLogado = logado.NomeUsuario;
+            }
+        }
+
+        public CadastrarUsuario(string usuario) : this()
+        {
+            if (!string.IsNullOrEmpty(usuario))
+            {
+                this.usuarioLogado = usuario;
+            }
+        }
 
         public CadastrarUsuario()
         {
             InitializeComponent();
+
+            if (SessaoSistema.UsuarioLogado != null && !string.IsNullOrEmpty(SessaoSistema.UsuarioLogado.NomeUsuario))
+            {
+                this.usuarioLogado = SessaoSistema.UsuarioLogado.NomeUsuario;
+            }
         }
 
         public void LimparCampos()
@@ -109,6 +129,12 @@ namespace Sistema_Gerenciamento_Usuários
                     }
                 }
 
+                RegistrosAuditoria.RegistrarAcao(
+                    this.usuarioLogado,
+                    "CADASTRO",
+                    $"O administrador '{this.usuarioLogado}' cadastrou o novo usuário '{usuario}' ({email})."
+                );
+
                 MessageBox.Show("Usuário cadastrado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
                 LimparCampos();
             }
@@ -137,8 +163,10 @@ namespace Sistema_Gerenciamento_Usuários
 
         private void Voltar_Click(object sender, RoutedEventArgs e)
         {
-            Tela_de_Admin janela = new Tela_de_Admin();
-            janela.Show();
+            if (this.Owner != null)
+            {
+                this.Owner.Show();
+            }
             this.Close();
         }
     }

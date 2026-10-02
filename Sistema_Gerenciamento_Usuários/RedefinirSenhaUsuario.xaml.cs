@@ -50,21 +50,27 @@ namespace Sistema_Gerenciamento_Usuários
                 {
                     conexao.Open();
 
-                    string checkQuery = "SELECT id FROM usuarios WHERE nome_usuario = @busca OR email = @busca";
+                    string checkQuery = "SELECT id, nome_usuario FROM usuarios WHERE nome_usuario = @busca OR email = @busca LIMIT 1";
                     int usuarioAlvoId = 0;
+                    string usuarioAlvoNome = string.Empty;
 
                     using (MySqlCommand cmdCheck = new MySqlCommand(checkQuery, conexao))
                     {
                         cmdCheck.Parameters.AddWithValue("@busca", usuarioEmail);
-                        object result = cmdCheck.ExecuteScalar();
 
-                        if (result == null)
+                        using (MySqlDataReader reader = cmdCheck.ExecuteReader())
                         {
-                            MessageBox.Show("Usuário ou e-mail não encontrado no sistema.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                            return;
+                            if (reader.Read())
+                            {
+                                usuarioAlvoId = reader.GetInt32("id");
+                                usuarioAlvoNome = reader.GetString("nome_usuario");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Usuário ou e-mail não encontrado no sistema.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                                return;
+                            }
                         }
-
-                        usuarioAlvoId = Convert.ToInt32(result);
                     }
 
                     if (adminLogado != null)
@@ -94,6 +100,14 @@ namespace Sistema_Gerenciamento_Usuários
 
                         if (linhasAfetadas > 0)
                         {
+                            string nomeAdminLogado = adminLogado != null ? adminLogado.NomeUsuario : "SISTEMA";
+
+                            RegistrosAuditoria.RegistrarAcao(
+                                nomeAdminLogado,
+                                "REDEFINIÇÃO DE SENHA",
+                                $"O administrador '{nomeAdminLogado}' redefiniu a senha do usuário '{usuarioAlvoNome}' (ID: {usuarioAlvoId})."
+                            );
+
                             MessageBox.Show("Senha redefinida com sucesso!", "Sucesso!", MessageBoxButton.OK, MessageBoxImage.Information);
                             this.Close();
                         }

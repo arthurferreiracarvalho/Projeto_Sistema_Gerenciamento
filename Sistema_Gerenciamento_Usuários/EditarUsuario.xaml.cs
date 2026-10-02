@@ -194,6 +194,14 @@ namespace Sistema_Gerenciamento_Usuários
 
                         if (linhasAfetadas > 0)
                         {
+                            string nomeAdminLogado = usuarioLogado != null ? usuarioLogado.NomeUsuario : "SISTEMA";
+
+                            RegistrosAuditoria.RegistrarAcao(
+                                nomeAdminLogado,
+                                "EDIÇÃO",
+                                $"O administrador '{nomeAdminLogado}' alterou os dados do usuário '{txtUsuario}' (ID: {usuarioIdParaEditar})."
+                            );
+
                             MessageBox.Show("Utilizador atualizado com sucesso!", "Sucesso!", MessageBoxButton.OK, MessageBoxImage.Information);
                             this.DialogResult = true;
                             this.Close();

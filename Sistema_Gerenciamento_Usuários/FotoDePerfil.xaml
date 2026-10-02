@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Sistema_Gerenciamento_Usuários"
         mc:Ignorable="d"
-        Title="FotoDePerfil" Height="450" Width="800">
+        Title="FotoDePerfil" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen">
     <Grid Margin="0,0,0,-25">
         <Grid.Background>
             <ImageBrush ImageSource="/Imagens/Tela Foto Perfil.png"/>
