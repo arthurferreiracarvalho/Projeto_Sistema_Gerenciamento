@@ -1,0 +1,50 @@
+﻿<Window x:Class="Sistema_Gerenciamento_Usuários.EditarPerfilUsuario"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sistema_Gerenciamento_Usuários"
+        mc:Ignorable="d"
+        Title="Editar Meu Perfil" Height="496" Width="450"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#F4F5F7">
+
+    <Grid Margin="20">
+        <Border Background="White" CornerRadius="12" Padding="20">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.1" Color="Black"/>
+            </Border.Effect>
+
+            <StackPanel>
+                <TextBlock Text="EDITAR PERFIL" FontSize="20" FontWeight="Bold" Foreground="#333" HorizontalAlignment="Center" Margin="0,0,0,15" FontFamily="Rockwell Extra Bold"/>
+
+                <StackPanel HorizontalAlignment="Center" Margin="0,0,0,15">
+                    <Border CornerRadius="50" Width="100" Height="100" BorderBrush="#007ACC" BorderThickness="3" HorizontalAlignment="Center">
+                        <Border.Background>
+                            <ImageBrush x:Name="imgFotoPerfil" Stretch="UniformToFill"/>
+                        </Border.Background>
+                    </Border>
+                    <Button x:Name="btnTrocarFoto" Content="Trocar Foto" Click="btnTrocarFoto_Click" Margin="0,8,0,0" Width="100" Height="25" Background="#545454" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand" FontFamily="Rockwell Extra Bold"/>
+                </StackPanel>
+
+                <TextBlock Text="Nome Completo:" FontWeight="Bold" Foreground="#444" Margin="0,5,0,2" FontFamily="Rockwell Extra Bold" FontSize="18"/>
+                <TextBox x:Name="txtNomeCompleto" Height="30" FontSize="14" Padding="5,3" VerticalContentAlignment="Center" Background="#F9F9F9" BorderBrush="#CCC"/>
+
+                <TextBlock Text="Nome de Usuário:" FontWeight="Bold" Foreground="#444" Margin="0,10,0,2" FontFamily="Rockwell Extra Bold" FontSize="18"/>
+                <TextBox x:Name="txtNomeUsuario" Height="30" FontSize="14" Padding="5,3" VerticalContentAlignment="Center" Background="#F9F9F9" BorderBrush="#CCC"/>
+                
+                <Grid Margin="0,25,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button x:Name="btnCancelar" Grid.Column="0" Content="CANCELAR" Click="btnCancelar_Click" Height="38" Background="#D32F2F" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand" FontSize="20" FontFamily="Rockwell Extra Bold"/>
+                    <Button x:Name="btnSalvar" Grid.Column="2" Content="SALVAR" Click="btnSalvar_Click" Height="38" Background="#228B00" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand" FontFamily="Rockwell Extra Bold" FontSize="20"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,70 @@
+﻿<Window x:Class="Sistema_Gerenciamento_Usuários.UsuariosCadastrados"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sistema_Gerenciamento_Usuários"
+        mc:Ignorable="d"
+        Title="Usuários Cadastrados" Height="500" Width="850"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#F4F5F7">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,15">
+            <Button x:Name="btnVoltar" Content="← Voltar" Click="btnVoltar_Click" HorizontalAlignment="Left" Width="103" Height="30" Background="#6C757D" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand" BorderBrush="Black" FontSize="17" FontFamily="Rockwell Extra Bold"/>
+            <TextBlock Text="👥 Usuários Cadastrados" FontSize="25" FontWeight="Bold" Foreground="#333" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rockwell Extra Bold"/>
+        </Grid>
+
+        <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="10,5" Margin="0,0,0,15">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="5" ShadowDepth="1" Opacity="0.1" Color="Black"/>
+            </Border.Effect>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="🔍" FontSize="16" VerticalAlignment="Center" Margin="5,0,10,0"/>
+                <TextBox x:Name="txtPesquisa" Grid.Column="1" BorderThickness="0" FontSize="14" VerticalAlignment="Center" TextChanged="txtPesquisa_TextChanged"/>
+            </Grid>
+        </Border>
+
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <ItemsControl x:Name="listaUsuarios">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="3" IsItemsHost="True"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Width="220" Height="250" Background="White" CornerRadius="10" Margin="8,8,16,8" Padding="15">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="6" ShadowDepth="2" Opacity="0.1" Color="Black"/>
+                            </Border.Effect>
+                            <StackPanel HorizontalAlignment="Center">
+
+                                <Border CornerRadius="50" Width="100" Height="100" BorderBrush="#007ACC" BorderThickness="2" HorizontalAlignment="Center" Margin="5,5,5,15">
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="{Binding CaminhoAvatar}" Stretch="UniformToFill"/>
+                                    </Border.Background>
+                                </Border>
+
+                                <TextBlock Text="{Binding NomeCompleto}" FontWeight="Bold" FontSize="20" Foreground="#333" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding NomeUsuarioFormatado}" FontSize="18" Foreground="#007ACC" HorizontalAlignment="Center" Margin="2,5,5,5"/>
+                                <TextBlock Text="{Binding Email}" FontSize="16" Foreground="#777" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</Window>

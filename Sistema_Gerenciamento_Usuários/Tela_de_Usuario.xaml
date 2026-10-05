@@ -5,12 +5,89 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Sistema_Gerenciamento_Usuários"
         mc:Ignorable="d"
-        Title="Tela_de_Usuario" Height="450" Width="800"
-        WindowStartupLocation="CenterScreen">
-    <Grid>
-        <Grid.Background>
-            <ImageBrush/>
-        </Grid.Background>
+        Title="Painel do Usuário" Height="500" Width="850"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#F4F5F7">
 
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Background="White" CornerRadius="12" Margin="0,0,15,0">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.1" Color="Black"/>
+            </Border.Effect>
+
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+
+                <Border CornerRadius="60" Width="120" Height="120" BorderBrush="#007ACC" BorderThickness="3" HorizontalAlignment="Center">
+                    <Border.Background>
+                        <ImageBrush x:Name="imgFotoPerfil" Stretch="UniformToFill"/>
+                    </Border.Background>
+                </Border>
+
+                <TextBlock x:Name="txtNomeCompleto" Text="Nome do Usuário" FontSize="18" FontWeight="Bold" Foreground="#333" HorizontalAlignment="Center" Margin="0,15,0,2" TextWrapping="Wrap" TextAlignment="Center" FontFamily="Rockwell Extra Bold"/>
+                <TextBlock x:Name="txtNomeUsuario" Text="@usuario" FontSize="14" Foreground="#FF8F8F8F" HorizontalAlignment="Center" Margin="0,0,0,5" FontFamily="Rockwell Extra Bold"/>
+                <TextBlock x:Name="txtEmail" Text="email@exemplo.com" FontSize="12" Foreground="#FF8F8F8F" HorizontalAlignment="Center" Margin="0,0,0,15" FontFamily="Rockwell Extra Bold"/>
+
+                <Border Background="#E1F5FE" CornerRadius="15" Padding="10,5" HorizontalAlignment="Center">
+                    <TextBlock Text="Usuário Comum" FontSize="12" FontWeight="Bold" Foreground="#0288D1" FontFamily="Rockwell Extra Bold"/>
+                </Border>
+
+                <Button x:Name="btnSair" Content="SAIR DA CONTA" Click="btnSair_Click" Margin="0,25,0,0" Width="180" Height="35" Background="#D32F2F" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand" FontFamily="Rockwell Extra Bold" FontSize="18"/>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Bem vindo de volta!" FontSize="25" FontWeight="Bold" Foreground="#FF333333" Margin="10,10,0,15" FontFamily="Rockwell Extra Bold"/>
+
+            <UniformGrid Grid.Row="1" Columns="2" Rows="2" Margin="5">
+                
+                <Border Background="White" CornerRadius="10" Margin="5" Padding="15">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="8" ShadowDepth="1" Opacity="0.1" Color="Black"/>
+                    </Border.Effect>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="👥" FontSize="32" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                        <TextBlock Text="Visualizar Usuários" FontSize="16" FontWeight="Bold" Foreground="#333" HorizontalAlignment="Center" FontFamily="Rockwell Extra Bold"/>
+                        <TextBlock Text="Veja a lista de usuários cadastrados." FontSize="11" Foreground="#FF8F8F8F" TextWrapping="Wrap" TextAlignment="Center" Margin="0,5,0,10" FontFamily="Rockwell Extra Bold"/>
+                        <Button x:Name="btnVisualizarUsuarios" Content="ACESSAR LISTA" Click="btnVisualizarUsuarios_Click" Height="30" Background="#007ACC" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand" FontSize="18" FontFamily="Rockwell Extra Bold"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="White" CornerRadius="10" Margin="5" Padding="15">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="8" ShadowDepth="1" Opacity="0.1" Color="Black"/>
+                    </Border.Effect>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="✏️" FontSize="32" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                        <TextBlock Text="Editar Meu Perfil" FontSize="16" FontWeight="Bold" Foreground="#333" HorizontalAlignment="Center" FontFamily="Rockwell Extra Bold"/>
+                        <TextBlock Text="Altere seu nome completo e sua foto de perfil." FontSize="11" Foreground="#FF8F8F8F" TextWrapping="Wrap" TextAlignment="Center" Margin="0,5,0,10" FontFamily="Rockwell Extra Bold"/>
+                        <Button x:Name="btnEditarPerfil" Content="MEU PERFIL" Click="btnEditarPerfil_Click" Height="30" Background="#007ACC" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand" FontSize="18" FontFamily="Rockwell Extra Bold"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="White" CornerRadius="10" Margin="5" Padding="15">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="8" ShadowDepth="1" Opacity="0.1" Color="Black"/>
+                    </Border.Effect>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="🔑" FontSize="32" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                        <TextBlock Text="Alterar Senha" FontSize="16" FontWeight="Bold" Foreground="#333" HorizontalAlignment="Center" FontFamily="Rockwell Extra Bold"/>
+                        <TextBlock Text="Atualize a sua senha de acesso de forma segura." FontSize="11" Foreground="#FF8F8F8F" TextWrapping="Wrap" TextAlignment="Center" Margin="0,5,0,10" FontFamily="Rockwell Extra Bold"/>
+                        <Button x:Name="btnAlterarSenha" Content="MUDAR SENHA" Click="btnAlterarSenha_Click" Height="30" Background="#007ACC" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand" FontFamily="Rockwell Extra Bold" FontSize="18"/>
+                    </StackPanel>
+                </Border>
+
+            </UniformGrid>
+        </Grid>
     </Grid>
 </Window>
